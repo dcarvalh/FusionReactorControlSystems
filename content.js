@@ -54,6 +54,8 @@ window.CONTENT = {
         sources: "Sources"
       },
       speedTitle: "Fastest loop timescale",
+      modes: { eli5: "ELI5", complete: "Complete" },
+      modeLabel: "Level of detail",
       sourcesLabel: "Sources"
     },
     why: {
@@ -153,6 +155,8 @@ window.CONTENT = {
   },
 
   // All sources, referenced by key from parts and shapes. Every number must come from one of these.
+  // Sources without a url are cited as plain text: their publisher links (ScienceDirect)
+  // fail for readers without a login, so they are not linked.
   sources: {
     tcvWiki: { title: "Wikipedia: Tokamak à configuration variable", url: "https://en.wikipedia.org/wiki/Tokamak_%C3%A0_configuration_variable" },
     epflShapes: { title: "EPFL Swiss Plasma Center: TCV plasma shapes", url: "https://www.epfl.ch/research/domains/swiss-plasma-center/tcv-plasma-shapes/" },
@@ -160,12 +164,10 @@ window.CONTENT = {
     hofmann1997: { title: "Hofmann et al., Feedback stabilization of axisymmetric modes in TCV (1997)", url: "https://www.osti.gov/etdeweb/biblio/587784" },
     dutch1995: { title: "Dutch et al., Experimental and theoretical growth rates of the vertical instability in TCV (1995)", url: "https://www.osti.gov/etdeweb/biblio/176266" },
     coda2010: { title: "Coda, Progress and scientific results in the TCV tokamak (2010)", url: "https://www.osti.gov/etdeweb/biblio/21562879" },
-    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)", url: "https://doi.org/10.1016/j.fpp.2023.100017" },
-    le2014: { title: "Le et al., Distributed digital real-time control system for TCV tokamak (2014)", url: "https://doi.org/10.1016/j.fusengdes.2013.11.001" },
-    galperti2024: { title: "Galperti et al., Overview of the TCV digital real-time plasma control system and its applications (2024)", url: "https://doi.org/10.1016/j.fusengdes.2024.114640" },
-    moret2015: { title: "Moret et al., Tokamak equilibrium reconstruction code LIUQE and its real time implementation (2015)", url: "https://doi.org/10.1016/j.fusengdes.2014.09.019" },
-    velasco2023: { title: "Velasco de la Fuente et al., Control upgrade for the TCV coils power supplies (2023)", url: "https://doi.org/10.1016/j.fusengdes.2023.113539" },
-    karpushov2023: { title: "Karpushov et al., Upgrade of the neutral beam heating system on TCV (2023)", url: "https://doi.org/10.1016/j.fusengdes.2022.113384" }
+    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)" },
+    le2014: { title: "Le et al., Distributed digital real-time control system for TCV tokamak (2014)" },
+    galperti2024: { title: "Galperti et al., Overview of the TCV digital real-time plasma control system and its applications (2024)" },
+    moret2015: { title: "Moret et al., Tokamak equilibrium reconstruction code LIUQE and its real time implementation (2015)" }
   },
 
   // The 5 tokamak parts, following EPFL's TCV infographic.
@@ -178,6 +180,15 @@ window.CONTENT = {
         "The hot, electrically charged gas being controlled. It follows the magnetic " +
         "field lines, which wind around the doughnut on nested surfaces.",
       shapeLink: true,
+      eli5: {
+        does:
+          "A gas so hot it becomes electrically charged. Magnetic fields hold it in the " +
+          "middle of the vessel, away from the walls.",
+        tech: ["Microwaves and particle beams heat it", "Gas valves add fuel"],
+        control:
+          "The control system keeps it in place, in the right shape and at the right " +
+          "current, for the whole shot."
+      },
       does:
         "Gas so hot its atoms split into ions and electrons, held away from the wall by " +
         "magnetic fields. It carries its own current (up to 1.2 MA on TCV). Its position, " +
@@ -220,6 +231,14 @@ window.CONTENT = {
       summary:
         "The large coils wrapped around the doughnut. They make the main magnetic " +
         "field, which runs the long way round.",
+      eli5: {
+        does:
+          "Big coils around the doughnut that make the main magnetic field. The plasma's " +
+          "particles follow that field instead of hitting the wall.",
+        tech: ["Large copper coils", "One steady power supply"],
+        control: "Set to a fixed current before the plasma starts, and held there.",
+        verify: ["tech"]
+      },
       does:
         "Make the strong main field that runs the long way round the doughnut: 1.43 T " +
         "on TCV. Charged particles spiral along the field lines instead of flying into the wall.",
@@ -257,6 +276,15 @@ window.CONTENT = {
         "Rings of coils inside and outside the plasma that set its position and shape. " +
         "TCV has 16, each with its own power supply, plus fast coils inside the vessel.",
       shapeLink: true,
+      eli5: {
+        does:
+          "Rings of coils that push and pull on the plasma to set where it sits and what " +
+          "shape it has.",
+        tech: ["16 coils, each powered separately", "Fast coils inside the vessel", "Magnetic sensors all around"],
+        control:
+          "A tall plasma wants to drift up or down. The coils catch it in well under a " +
+          "millisecond, thousands of times per second."
+      },
       does:
         "Set the plasma's position and shape. TCV's 16 independently powered shaping " +
         "coils, plus an internal fast coil for vertical control and the ohmic coils, " +
@@ -301,6 +329,13 @@ window.CONTENT = {
       summary:
         "The transformer at the centre. Changing its current induces the electric " +
         "current that flows in the plasma.",
+      eli5: {
+        does:
+          "A transformer in the middle. Changing its current makes a current flow in the " +
+          "plasma, which heats it and helps hold it together.",
+        tech: ["A stack of coils around the machine's axis", "The plasma acts as the transformer's second winding"],
+        control: "The plasma current follows a planned ramp up, hold and ramp down, with feedback keeping it on track."
+      },
       does:
         "Drives the plasma current. Ramping the current in the central coils induces a " +
         "voltage around the doughnut, which pushes up to 1.2 MA through the plasma on TCV.",
@@ -340,6 +375,15 @@ window.CONTENT = {
       name: "Control system",
       summary:
         "Measures the plasma with sensors and adjusts the coils, heating and fuelling in real time.",
+      eli5: {
+        does:
+          "The brain of the machine. It reads the sensors, works out what the plasma is " +
+          "doing, and tells the coils, heaters and fuel valves what to do.",
+        tech: ["Real-time computers running control code", "A simulator to test code before each shot", "Safety systems that can stop a shot"],
+        control:
+          "Fast loops for the plasma (a millisecond or less), slower ones for running the " +
+          "shot, and protection watching over everything."
+      },
       does:
         "Runs each shot: reads the sensors, works out the plasma's state, and commands " +
         "coils, heating and fuelling. Around that sit shot sequencing, machine " +
