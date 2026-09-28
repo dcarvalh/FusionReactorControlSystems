@@ -165,7 +165,7 @@ window.CONTENT = {
         {
           layer: "Supervisory & SCADA",
           speed: "seconds",
-          done: ["WinCC OA and CTRL++ at CERN; C# and SQL SCADA at SKAN"],
+          done: ["WinCC OA and CTRL++ at CERN; C# and SQL and zenon at SKAN"],
           status: "shipped"
         },
         {
