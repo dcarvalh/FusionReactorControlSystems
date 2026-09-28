@@ -1,0 +1,286 @@
+/* ---------- Design tokens ---------- */
+
+:root {
+  /* Surfaces and lines */
+  --bg: #0b0f14;
+  --surface: #11161d;
+  --surface-raised: #161c25;
+  --line: #2b3440;
+  --line-soft: #1c232d;
+
+  /* Text */
+  --text: #e7e9ec;
+  --text-muted: #9aa3af;
+  --text-faint: #5f6977;
+
+  /* Accents */
+  --select: #4fd3e3;          /* cyan: selection and focus */
+  --plasma-a: #ff4fa8;        /* magenta: plasma glow */
+  --plasma-b: #ff9a3d;        /* orange: plasma glow */
+
+  /* Commonality tints (muted) */
+  --common-shared: #4f7d6b;
+  --common-adapted: #86744c;
+  --common-specific: #6f5f86;
+
+  /* Status (margin meter) */
+  --ok: #5fb887;
+  --warn: #d9a441;
+  --bad: #d9614f;
+
+  /* Type */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Shape and motion */
+  --radius: 6px;
+  --stroke: 1px;
+  --transition: 180ms ease;
+  --max-width: 1280px;
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--text-xl);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--select);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 2px solid var(--select);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: var(--stroke) solid var(--line-soft);
+}
+
+.brand {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.brand:hover {
+  text-decoration: none;
+  color: var(--select);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+}
+
+.nav a {
+  padding: var(--space-1) 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  border-bottom: var(--stroke) solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.nav a:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav a[aria-current="page"] {
+  color: var(--text);
+  border-bottom-color: var(--select);
+}
+
+/* ---------- Views ---------- */
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5);
+}
+
+.view[hidden] {
+  display: none;
+}
+
+.intro {
+  max-width: 60ch;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-6);
+  color: var(--text-muted);
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  border: var(--stroke) dashed var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+/* ---------- Tokamak layout ---------- */
+
+.tokamak-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.visuals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.frame {
+  position: relative;
+  margin: 0;
+  border: var(--stroke) solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.frame-overview {
+  aspect-ratio: 16 / 7;
+}
+
+.frame-cross-section {
+  aspect-ratio: 4 / 5;
+}
+
+.frame-label {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+.info-panel {
+  position: sticky;
+  top: var(--space-5);
+  padding: var(--space-5);
+  border: var(--stroke) solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  padding: var(--space-5);
+  border-top: var(--stroke) solid var(--line-soft);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 800px) {
+  main {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .tokamak-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .info-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .nav {
+    gap: var(--space-1) var(--space-4);
+  }
+
+  h1 {
+    font-size: var(--text-lg);
+  }
+}

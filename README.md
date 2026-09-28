@@ -1,5 +1,13 @@
-# FusionReactorControlSystems
+# Tokamak Control Map
 
-## What is a nuclear fusion reactor?
+An interactive, static web page that maps the main parts of a tokamak to how each one is controlled: which loops run, how fast, how they are tested and monitored. It also includes a toy plasma vertical-stability game. It is a simplified, TCV-inspired illustration for learning, not an official representation of TCV, EPFL or Fusionality. Plain HTML, CSS and vanilla JavaScript: no framework, no build step.
 
-A nuclear fusion reactor is a "sun in a bottle": a machine that heats hydrogen isotopes (deuterium and tritium) to over 100 million °C, until they become plasma and their nuclei fuse into helium, releasing enormous energy. Because no material can touch plasma this hot, powerful magnetic fields confine it (as in tokamaks and stellarators). Fusion promises clean, abundant power with no carbon emissions and no long-lived waste, but keeping the plasma stable is extremely hard, which is why precise real-time control systems are essential.
+**Live:** https://dcarvalh.github.io/FusionReactorControlSystems/
+
+## Run locally
+
+```sh
+python3 -m http.server
+```
+
+Then open http://localhost:8000.
