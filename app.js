@@ -47,6 +47,17 @@ function fillText() {
   });
 }
 
+// A source as a link, or as plain text when it has no working url.
+function sourceLink(key) {
+  var source = window.CONTENT.sources[key];
+  if (!source.url) return el("span", "", source.title);
+  var link = el("a", "", source.title);
+  link.href = source.url;
+  link.target = "_blank";
+  link.rel = "noopener";
+  return link;
+}
+
 // ---------- Machine glyphs (thin line art, 120 × 60) ----------
 
 function svgEl(tag, attrs) {
@@ -355,12 +366,48 @@ function renderDiagram(diagram) {
 
 // ---------- Info panel ----------
 
+// "ELI5" shows a short, plain version; "Complete" shows every section.
+// The choice is remembered in this browser when storage is available.
+var panelMode = "eli5";
+try {
+  if (localStorage.getItem("panelMode") === "complete") panelMode = "complete";
+} catch (e) {}
+
+function setPanelMode(mode) {
+  panelMode = mode;
+  try {
+    localStorage.setItem("panelMode", mode);
+  } catch (e) {}
+  if (selectedPartId) renderPanel(findPart(selectedPartId));
+}
+
+function renderModeSwitch() {
+  var t = window.CONTENT.views.tokamak;
+  var group = el("div", "mode-switch");
+  group.setAttribute("role", "group");
+  group.setAttribute("aria-label", t.modeLabel);
+  ["eli5", "complete"].forEach(function (mode) {
+    var button = el("button", "mode-button", t.modes[mode]);
+    button.type = "button";
+    button.setAttribute("aria-pressed", panelMode === mode ? "true" : "false");
+    button.addEventListener("click", function () {
+      setPanelMode(mode);
+      document.querySelector('.mode-button[aria-pressed="true"]').focus();
+    });
+    group.appendChild(button);
+  });
+  return group;
+}
+
 function renderPanel(part) {
   var t = window.CONTENT.views.tokamak;
   var labels = t.panelLabels;
+  var complete = panelMode === "complete";
+  var text = complete ? part : part.eli5;
   var panel = document.getElementById("info-panel");
   panel.textContent = "";
 
+  panel.appendChild(renderModeSwitch());
   panel.appendChild(el("h2", "panel-title", part.name));
   panel.appendChild(el("p", "panel-summary", part.summary));
 
@@ -373,21 +420,23 @@ function renderPanel(part) {
     return heading;
   }
 
-  section("does", el("p", "", part.does));
+  section("does", el("p", "", text.does));
 
   var tech = el("ul", "panel-list");
-  part.tech.forEach(function (item) {
+  text.tech.forEach(function (item) {
     tech.appendChild(el("li", "", item));
   });
   section("tech", tech);
 
-  var heading = section("control", el("p", "", part.control.text));
+  var heading = section("control", el("p", "", complete ? part.control.text : text.control));
   var badge = el("span", "speed-badge", part.control.speed);
   badge.title = t.speedTitle;
   heading.appendChild(badge);
 
-  section("testing", el("p", "", part.testing));
-  section("monitoring", el("p", "", part.monitoring));
+  if (complete) {
+    section("testing", el("p", "", part.testing));
+    section("monitoring", el("p", "", part.monitoring));
+  }
 
   var figure = el("div", "panel-diagram");
   figure.appendChild(renderDiagram(part.diagram));
@@ -395,14 +444,7 @@ function renderPanel(part) {
 
   var sources = el("ol", "panel-sources");
   part.sources.forEach(function (key) {
-    var source = window.CONTENT.sources[key];
-    var item = el("li");
-    var link = el("a", "", source.title);
-    link.href = source.url;
-    link.target = "_blank";
-    link.rel = "noopener";
-    item.appendChild(link);
-    sources.appendChild(item);
+    sources.appendChild(el("li")).appendChild(sourceLink(key));
   });
   section("sources", sources);
 
@@ -413,7 +455,7 @@ function renderPanel(part) {
       document.getElementById("shapes").scrollIntoView({ behavior: "smooth", block: "start" });
       document.querySelector(".shape-button.is-selected").focus({ preventScroll: true });
     });
-    panel.insertBefore(link, panel.children[2]);
+    panel.insertBefore(link, panel.children[3]);
   }
 }
 
@@ -562,12 +604,7 @@ function renderShapePicker() {
   });
   var sources = el("ol", "shapes-sources");
   window.CONTENT.shapes.sources.forEach(function (key) {
-    var source = window.CONTENT.sources[key];
-    var link = el("a", "", source.title);
-    link.href = source.url;
-    link.target = "_blank";
-    link.rel = "noopener";
-    sources.appendChild(el("li")).appendChild(link);
+    sources.appendChild(el("li")).appendChild(sourceLink(key));
   });
   document.getElementById("shapes").appendChild(sources);
 

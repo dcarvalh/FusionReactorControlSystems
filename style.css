@@ -696,6 +696,35 @@ main {
 
 /* ---------- Info panel ---------- */
 
+.mode-switch {
+  display: inline-flex;
+  margin-bottom: var(--space-4);
+  padding: 2px;
+  border: var(--stroke) solid var(--line);
+  border-radius: 999px;
+}
+
+.mode-button {
+  padding: var(--space-1) var(--space-3);
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.mode-button:hover {
+  color: var(--text);
+}
+
+.mode-button[aria-pressed="true"] {
+  background: var(--select);
+  color: var(--bg);
+}
+
 .panel-title {
   font-size: var(--text-lg);
 }
