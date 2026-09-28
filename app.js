@@ -58,6 +58,11 @@ function sourceLink(key) {
   return link;
 }
 
+// Tell other views (the 3D overview) what changed.
+function announce(name, detail) {
+  window.dispatchEvent(new CustomEvent(name, { detail: detail }));
+}
+
 // ---------- Machine glyphs (thin line art, 120 × 60) ----------
 
 function svgEl(tag, attrs) {
@@ -205,15 +210,25 @@ function initCrossSection() {
       var box = frame.getBoundingClientRect();
       showTooltip(part.name, event.clientX - box.left, event.clientY - box.top);
     });
-    group.addEventListener("mouseleave", hideTooltip);
+    group.addEventListener("mouseleave", function () {
+      hideTooltip();
+      announce("part-hover", { id: null });
+    });
+    group.addEventListener("mouseenter", function () {
+      announce("part-hover", { id: part.id });
+    });
 
     // Keyboard: tooltip sits above the focused part.
     group.addEventListener("focus", function () {
       var box = frame.getBoundingClientRect();
       var rect = group.getBoundingClientRect();
       showTooltip(part.name, rect.left + rect.width / 2 - box.left, rect.top - box.top);
+      announce("part-hover", { id: part.id });
     });
-    group.addEventListener("blur", hideTooltip);
+    group.addEventListener("blur", function () {
+      hideTooltip();
+      announce("part-hover", { id: null });
+    });
 
     group.addEventListener("click", function () {
       selectPart(part.id, true);
@@ -442,6 +457,7 @@ function selectPart(id, fromUser) {
     node.setAttribute("aria-pressed", isSelected ? "true" : "false");
   });
   renderPanel(part);
+  announce("part-select", { id: id });
 
   if (fromUser) {
     history.replaceState(null, "", "#tokamak/" + id);
@@ -469,6 +485,7 @@ function drawPlasma(boundaries) {
   var flux = fluxSurfaces(boundaries[0], FLUX_SCALES).concat(fluxSurfaces(boundaries[1], FLUX_SCALES));
   document.getElementById("plasma-flux").setAttribute("d", flux.map(pathFromPoints).join(" "));
   currentBoundaries = boundaries;
+  announce("plasma-shape", { boundaries: boundaries });
 }
 
 // Divertor legs and X-point markers for a shape.

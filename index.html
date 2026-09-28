@@ -34,7 +34,7 @@
       <p class="intro" data-text="views.tokamak.intro"></p>
       <div class="tokamak-layout">
         <div class="visuals">
-          <figure class="frame frame-overview">
+          <figure class="frame frame-overview" id="overview">
             <figcaption class="frame-label" data-text="views.tokamak.overviewLabel"></figcaption>
           </figure>
           <figure class="frame frame-cross-section" id="cross-section">
@@ -162,5 +162,9 @@
   <script src="content.js"></script>
   <script src="shapes.js"></script>
   <script src="app.js"></script>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script type="module" src="overview.js"></script>
 </body>
 </html>

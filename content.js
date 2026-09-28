@@ -31,7 +31,7 @@ window.CONTENT = {
       intro:
         "A poloidal cross-section: a slice through the doughnut. " +
         "Select a part to see what it does and how it is controlled.",
-      overviewLabel: "Overview · 3D view coming later",
+      overviewLabel: "3D cutaway · cyan plane = the slice below",
       crossSectionLabel: "Cross-section · TCV-inspired · illustrative, not to scale",
       axisLabel: "axis of the doughnut",
       vesselLabel: "vacuum vessel",
