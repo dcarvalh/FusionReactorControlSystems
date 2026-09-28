@@ -115,7 +115,7 @@ window.CONTENT = {
       ]
     },
     showcase: {
-      title: "What I hope to show",
+      title: "What this page demonstrates",
       items: [
         {
           heading: "Fast learner.",
@@ -154,7 +154,7 @@ window.CONTENT = {
     // From David's CV (Sep 2026) and cover letter. Every line names a real
     // system, tool or deliverable.
     fit: {
-      title: "Where I fit",
+      title: "Experience beyond this page",
       intro: "My experience, from supervision down to real-time control hardware.",
       columns: { layer: "Layer", done: "What I've done", status: "Status" },
       statusLabels: {
