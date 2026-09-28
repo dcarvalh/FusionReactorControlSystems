@@ -163,8 +163,7 @@ a:hover {
   text-decoration: none;
 }
 
-.nav a[aria-current="page"],
-.nav-button[aria-current="page"] {
+.nav a[aria-current="page"] {
   color: var(--text);
   border-bottom-color: var(--select);
 }
@@ -174,16 +173,8 @@ a:hover {
   position: relative;
 }
 
-.nav-button {
-  padding: var(--space-1) 0;
-  border: 0;
-  border-bottom: var(--stroke) solid transparent;
-  background: none;
-  font: inherit;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color var(--transition), border-color var(--transition);
+.nav .nav-button {
+  display: inline-block;
 }
 
 .nav-button::after {
@@ -191,16 +182,12 @@ a:hover {
   font-size: 0.8em;
 }
 
-.nav-button:hover {
-  color: var(--text);
-}
-
 .nav-menu {
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 10;
-  min-width: 160px;
+  min-width: 270px;
   margin: 0;
   padding: var(--space-1);
   list-style: none;
@@ -222,6 +209,23 @@ a:hover {
 .nav .nav-menu a:focus-visible {
   background: var(--surface);
   color: var(--select);
+}
+
+.nav-menu-disabled {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-faint);
+  white-space: nowrap;
+  cursor: not-allowed;
+}
+
+.nav-menu-soon {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  white-space: nowrap;
 }
 
 /* ---------- Views ---------- */
@@ -1166,6 +1170,7 @@ main {
 .info-panel {
   position: sticky;
   top: var(--space-5);
+  margin-top: var(--panel-offset, 0);
   max-height: calc(100vh - 2 * var(--space-5));
   overflow-y: auto;
   padding: var(--space-5);
@@ -1244,6 +1249,7 @@ main {
   .info-panel {
     position: static;
     max-height: none;
+    margin-top: 0;
   }
 
   .panel-empty-arrow::before {

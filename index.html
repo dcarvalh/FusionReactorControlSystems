@@ -25,12 +25,11 @@
   <header class="topbar">
     <a class="brand" href="#home" data-text="site.title"></a>
     <nav class="nav" aria-label="Main">
-      <!-- "Select your machine" opens a small menu (hover, click or keyboard) -->
+      <!-- "Select your machine" links to the home page; hovering or focusing it
+           opens a menu of machines (filled in by app.js) -->
       <div class="nav-item" id="machine-nav">
-        <button class="nav-button" type="button" aria-expanded="false" aria-controls="machine-menu" data-view-link="home" data-text="nav.home"></button>
-        <ul class="nav-menu" id="machine-menu" hidden>
-          <li><a href="#tokamak" data-text="nav.tokamak"></a></li>
-        </ul>
+        <a class="nav-button" href="#home" aria-haspopup="true" aria-controls="machine-menu" data-view-link="home" data-text="nav.home"></a>
+        <ul class="nav-menu" id="machine-menu" hidden></ul>
       </div>
       <a href="#why" data-view-link="why" data-text="nav.why"></a>
     </nav>

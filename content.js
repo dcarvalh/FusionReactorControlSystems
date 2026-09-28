@@ -14,7 +14,6 @@ window.CONTENT = {
 
   nav: {
     home: "Select your machine",
-    tokamak: "Tokamak",
     why: "Why I built this"
   },
 
@@ -116,13 +115,13 @@ window.CONTENT = {
       ]
     },
     showcase: {
-      title: "What it is meant to show",
+      title: "What I hope to show",
       items: [
         {
           heading: "Fast learner.",
           text:
-            "I knew nothing about how nuclear fusion reactors work. Building this page " +
-            "is how the machine started to make sense."
+            "I knew nothing about how nuclear fusion reactors really work. Building this " +
+            "page was my way of learning how these machines work."
         },
         {
           heading: "Control systems approach.",
@@ -156,7 +155,7 @@ window.CONTENT = {
     // system, tool or deliverable.
     fit: {
       title: "Where I fit",
-      intro: "My experience, from supervision down to real-time loops.",
+      intro: "My experience, from supervision down to real-time control hardware.",
       columns: { layer: "Layer", done: "What I've done", status: "Status" },
       statusLabels: {
         shipped: "Shipped in production",
@@ -193,9 +192,8 @@ window.CONTENT = {
           status: "shipped"
         },
         {
-          layer: "Real-time loops",
-          speed: "kHz–MHz",
-          done: ["SCADA control logic in CTRL++ (C/C++ syntax); supported real-time control hardware"],
+          layer: "Real-time control hardware",
+          done: ["Supported real-time control hardware by integrating PLCs and custom current-regulation hardware into the SCADA"],
           status: "shipped"
         }
       ],
@@ -324,24 +322,24 @@ window.CONTENT = {
       name: "Shaping coils (poloidal field)",
       summary:
         "Rings of coils inside and outside the plasma that set its position and shape. " +
-        "TCV has 16, each with its own power supply, plus fast coils inside the vessel.",
+        "TCV has 16, each with its own power supply, plus a fast coil inside the vessel.",
       simple: {
         does:
           "Rings of coils that push and pull on the plasma to set where it sits and what " +
           "shape it has.",
-        tech: ["16 coils, each powered separately", "Fast coils inside the vessel", "Magnetic sensors all around"],
+        tech: ["16 coils, each powered separately", "A fast coil inside the vessel", "Magnetic sensors all around"],
         control:
           "A tall plasma wants to drift up or down. The coils catch it in well under a " +
           "millisecond, thousands of times per second."
       },
       does:
         "Set the plasma's position and shape. TCV's 16 independently powered shaping " +
-        "coils, plus an internal fast coil for vertical control and the ohmic coils, " +
-        "give 19 control coils in all.",
+        "coils, plus the ohmic coils and one internal fast coil for vertical control " +
+        "(with parts in the top and bottom corners of the vessel), give 19 control coils in all.",
       tech: [
         "16 shaping coils, each with its own power supply",
         "Thyristor power supplies, driven by voltage references",
-        "A fast coil inside the vessel for vertical stability",
+        "A fast coil inside the vessel for vertical stability (one circuit, top and bottom parts)",
         "Magnetic sensors: 34 flux loops and 38 field probes feed the loop"
       ],
       control: {

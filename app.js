@@ -662,37 +662,64 @@ function renderShapePicker() {
 
 function initMachineMenu() {
   var item = document.getElementById("machine-nav");
-  var button = item.querySelector(".nav-button");
   var menu = document.getElementById("machine-menu");
+
+  // One entry per machine: active ones link to their view, the rest are greyed out.
+  window.CONTENT.machines.forEach(function (machine) {
+    var li = el("li");
+    if (machine.active) {
+      var link = el("a", "", machine.name);
+      link.href = "#" + machine.id;
+      li.appendChild(link);
+    } else {
+      var entry = el("span", "nav-menu-disabled", machine.name);
+      entry.setAttribute("aria-disabled", "true");
+      entry.appendChild(el("span", "nav-menu-soon", window.CONTENT.comingSoon));
+      li.appendChild(entry);
+    }
+    menu.appendChild(li);
+  });
 
   function setOpen(open) {
     menu.hidden = !open;
-    button.setAttribute("aria-expanded", open ? "true" : "false");
   }
 
-  button.addEventListener("click", function () {
-    setOpen(menu.hidden);
-  });
-  // Hover opens it on devices with a mouse.
+  // Opens on mouse hover, and while keyboard focus is inside (so Tab reaches the items).
   item.addEventListener("pointerenter", function (event) {
     if (event.pointerType === "mouse") setOpen(true);
   });
   item.addEventListener("pointerleave", function (event) {
     if (event.pointerType === "mouse") setOpen(false);
   });
-  // Close after choosing, on Escape, or when clicking elsewhere.
-  menu.addEventListener("click", function () {
-    setOpen(false);
+  item.addEventListener("focusin", function () {
+    setOpen(true);
+  });
+  item.addEventListener("focusout", function (event) {
+    if (!item.contains(event.relatedTarget)) setOpen(false);
   });
   item.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-      setOpen(false);
-      button.focus();
-    }
+    if (event.key === "Escape") setOpen(false);
   });
-  document.addEventListener("click", function (event) {
-    if (!item.contains(event.target)) setOpen(false);
+  // Close after choosing (including a click on "Select your machine" itself).
+  item.addEventListener("click", function (event) {
+    if (event.target.closest("a")) setOpen(false);
   });
+}
+
+// ---------- Keep the info panel level with the 3D view (desktop) ----------
+
+// The shape picker sits above the 3D view in the left column; push the panel
+// down by the same amount so its top (and arrow) line up with the drawings.
+function initPanelAlignment() {
+  var visuals = document.querySelector(".visuals");
+  var overview = document.getElementById("overview");
+  function align() {
+    var offset = overview.getBoundingClientRect().top - visuals.getBoundingClientRect().top;
+    document.documentElement.style.setProperty("--panel-offset", Math.max(0, offset) + "px");
+  }
+  new ResizeObserver(align).observe(document.getElementById("shapes"));
+  window.addEventListener("resize", align);
+  align();
 }
 
 // ---------- Views ----------
@@ -736,4 +763,5 @@ initCrossSection();
 renderPartsList();
 renderShapePicker();
 onHashChange();
+initPanelAlignment();
 window.addEventListener("hashchange", onHashChange);
