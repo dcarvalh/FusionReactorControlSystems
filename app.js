@@ -79,7 +79,9 @@ function machineGlyph(id) {
     add("ellipse", { cx: 60, cy: 32, rx: 50, ry: 18 });
     add("ellipse", { cx: 60, cy: 32, rx: 20, ry: 6 });
     add("ellipse", { cx: 60, cy: 32, rx: 35, ry: 12, class: "glyph-plasma", "stroke-width": "2" });
-    add("line", { x1: 60, y1: 4, x2: 60, y2: 58, "stroke-dasharray": "2 3" });
+    // The axis passes through the hole, then hides behind the near side of the doughnut.
+    add("line", { x1: 60, y1: 4, x2: 60, y2: 38, "stroke-dasharray": "2 3" });
+    add("line", { x1: 60, y1: 51, x2: 60, y2: 58, "stroke-dasharray": "2 3" });
   } else if (id === "stellarator") {
     add("ellipse", { cx: 60, cy: 32, rx: 50, ry: 18 });
     add("path", { d: ellipsePath(60, 32, 35, 12, 0.18, 5), "stroke-width": "1.5" });
@@ -155,6 +157,139 @@ function renderWhy() {
   body.appendChild(fit);
 }
 
+// ---------- Tokamak: cross-section, parts list, info panel ----------
+
+var selectedPartId = null;
+
+function findPart(id) {
+  return window.CONTENT.parts.filter(function (part) {
+    return part.id === id;
+  })[0];
+}
+
+// An elongated D shape: elongation kappa, triangularity delta (pointing inboard).
+function plasmaPath(cx, cy, a, kappa, delta) {
+  var points = [];
+  for (var i = 0; i < 72; i++) {
+    var t = (i / 72) * 2 * Math.PI;
+    var x = cx + a * Math.cos(t + delta * Math.sin(t));
+    var y = cy - kappa * a * Math.sin(t);
+    points.push(x.toFixed(1) + " " + y.toFixed(1));
+  }
+  return "M" + points.join(" L") + " Z";
+}
+
+function showTooltip(text, x, y) {
+  var tip = document.getElementById("xs-tooltip");
+  tip.textContent = text;
+  tip.hidden = false;
+  tip.style.left = x + "px";
+  tip.style.top = y + "px";
+}
+
+function hideTooltip() {
+  document.getElementById("xs-tooltip").hidden = true;
+}
+
+function initCrossSection() {
+  var d = plasmaPath(242, 360, 62, 2.05, 0.45);
+  document.getElementById("plasma-shape").setAttribute("d", d);
+  document.getElementById("plasma-glow-shape").setAttribute("d", d);
+
+  var frame = document.getElementById("cross-section");
+
+  document.querySelectorAll("#cross-section .part").forEach(function (group) {
+    var part = findPart(group.dataset.part);
+    group.setAttribute("tabindex", "0");
+    group.setAttribute("role", "button");
+    group.setAttribute("aria-label", part.name);
+    group.setAttribute("aria-pressed", "false");
+
+    // Pointer: tooltip follows the cursor.
+    group.addEventListener("mousemove", function (event) {
+      var box = frame.getBoundingClientRect();
+      showTooltip(part.name, event.clientX - box.left, event.clientY - box.top);
+    });
+    group.addEventListener("mouseleave", hideTooltip);
+
+    // Keyboard: tooltip sits above the focused part.
+    group.addEventListener("focus", function () {
+      var box = frame.getBoundingClientRect();
+      var rect = group.getBoundingClientRect();
+      showTooltip(part.name, rect.left + rect.width / 2 - box.left, rect.top - box.top);
+    });
+    group.addEventListener("blur", hideTooltip);
+
+    group.addEventListener("click", function () {
+      selectPart(part.id, true);
+    });
+    group.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        selectPart(part.id, true);
+      }
+    });
+  });
+}
+
+function renderPartsList() {
+  var list = document.getElementById("parts-list");
+  window.CONTENT.parts.forEach(function (part) {
+    var item = el("li");
+    var button = el("button", "parts-list-button", part.name);
+    button.type = "button";
+    button.dataset.part = part.id;
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", function () {
+      selectPart(part.id, true);
+    });
+    item.appendChild(button);
+    list.appendChild(item);
+  });
+}
+
+// Fill the info panel. Sections without content yet show a placeholder.
+function renderPanel(part) {
+  var labels = window.CONTENT.views.tokamak.panelLabels;
+  var panel = document.getElementById("info-panel");
+  panel.textContent = "";
+
+  panel.appendChild(el("h2", "panel-title", part.name));
+  panel.appendChild(el("p", "panel-summary", part.summary));
+
+  Object.keys(labels).forEach(function (key) {
+    var section = el("section", "panel-section");
+    section.appendChild(el("h3", "", labels[key]));
+    if (part[key] === undefined) {
+      section.appendChild(el("p", "panel-pending", window.CONTENT.views.tokamak.panelPending));
+    }
+    panel.appendChild(section);
+  });
+}
+
+// Highlight a part everywhere and show it in the panel. The hash records the
+// selection (e.g. "#tokamak/pf") without triggering a view change.
+function selectPart(id, fromUser) {
+  var part = findPart(id);
+  if (!part) return;
+  selectedPartId = id;
+
+  document.querySelectorAll("[data-part]").forEach(function (node) {
+    var isSelected = node.dataset.part === id;
+    node.classList.toggle("is-selected", isSelected);
+    node.setAttribute("aria-pressed", isSelected ? "true" : "false");
+  });
+  renderPanel(part);
+
+  if (fromUser) {
+    history.replaceState(null, "", "#tokamak/" + id);
+    // On narrow screens the panel is below the drawing: bring it into view.
+    if (window.matchMedia("(max-width: 800px)").matches) {
+      document.getElementById("info-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+}
+
 // ---------- Views ----------
 
 // The first part of the hash picks the view, e.g. "#tokamak" or "#tokamak/pf".
@@ -177,11 +312,16 @@ function showView(name) {
 }
 
 function onHashChange() {
-  showView(currentView());
+  var view = currentView();
+  showView(view);
+  var partId = location.hash.split("/")[1];
+  if (view === "tokamak" && partId && partId !== selectedPartId) selectPart(partId, false);
 }
 
 fillText();
 renderMachines();
 renderWhy();
+initCrossSection();
+renderPartsList();
 onHashChange();
 window.addEventListener("hashchange", onHashChange);
