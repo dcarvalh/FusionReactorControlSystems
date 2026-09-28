@@ -738,10 +738,104 @@ main {
   color: var(--text-faint);
 }
 
-.panel-pending {
+.panel-section p,
+.panel-list {
+  color: var(--text-muted);
+}
+
+.panel-list {
+  margin: 0;
+  padding-left: var(--space-4);
+}
+
+.panel-list li {
+  margin-bottom: var(--space-1);
+}
+
+.speed-badge {
+  margin-left: var(--space-2);
+  padding: 0 var(--space-2);
+  border: var(--stroke) solid var(--select);
+  border-radius: 999px;
+  color: var(--select);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.panel-sources {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.panel-sources li {
+  margin-bottom: var(--space-1);
+  color: var(--text-faint);
+}
+
+/* ---------- Block diagrams ---------- */
+
+.panel-diagram {
+  margin-top: var(--space-2);
+}
+
+.bd {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bd-box {
+  fill: var(--surface-raised);
+  stroke: var(--draw);
+  stroke-width: 1;
+}
+
+.bd-core {
+  stroke: var(--select);
+}
+
+.bd-layer {
+  stroke-dasharray: 3 3;
+}
+
+.bd-label {
+  fill: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.bd-caption,
+.bd-rate {
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.bd-rate {
+  fill: var(--select);
+}
+
+.bd-arrow {
+  fill: none;
+  stroke: var(--draw);
+  stroke-width: 1;
+}
+
+.bd-feedback {
+  stroke: var(--select);
+  stroke-dasharray: 4 3;
+}
+
+.bd-head {
+  fill: var(--draw);
+}
+
+.shapes-sources {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-4);
   font-size: var(--text-xs);
   color: var(--text-faint);
-  font-style: italic;
 }
 
 .info-panel {

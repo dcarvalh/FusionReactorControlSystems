@@ -232,23 +232,179 @@ function renderPartsList() {
   });
 }
 
-// Fill the info panel. Sections without content yet show a placeholder.
+// ---------- Block diagrams (generated from content.js) ----------
+
+var BOX_W = 136;
+var BOX_H = 46;
+var GAP_X = 30;
+var GAP_Y = 44;
+var PAD = 16;
+
+function svgText(x, y, text, className) {
+  var node = svgEl("text", { x: x, y: y, class: className, "text-anchor": "middle" });
+  node.textContent = text;
+  return node;
+}
+
+function diagramBox(svg, x, y, label, caption, extraClass) {
+  svg.appendChild(svgEl("rect", { x: x, y: y, width: BOX_W, height: BOX_H, rx: 4, class: "bd-box " + (extraClass || "") }));
+  svg.appendChild(svgText(x + BOX_W / 2, y + (caption ? 20 : 27), label, "bd-label"));
+  if (caption) svg.appendChild(svgText(x + BOX_W / 2, y + 35, caption, "bd-caption"));
+}
+
+function arrow(svg, d) {
+  svg.appendChild(svgEl("path", { d: d, class: "bd-arrow", "marker-end": "url(#bd-head)" }));
+}
+
+function diagramSvg(width, height, label) {
+  var svg = svgEl("svg", { viewBox: "0 0 " + width + " " + height, class: "bd", role: "img", "aria-label": label });
+  var defs = svgEl("defs", {});
+  var marker = svgEl("marker", { id: "bd-head", viewBox: "0 0 8 8", refX: 7, refY: 4, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse" });
+  marker.appendChild(svgEl("path", { d: "M0 0 L8 4 L0 8 Z", class: "bd-head" }));
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+  return svg;
+}
+
+// A chain of boxes with one feedback arrow from the last back to the first.
+// Chains longer than 3 snake onto a second row (right to left) to fit the panel.
+function renderChain(diagram) {
+  var nodes = diagram.nodes;
+  var perRow = nodes.length > 3 ? Math.ceil(nodes.length / 2) : nodes.length;
+  var rows = nodes.length > perRow ? 2 : 1;
+  var width = PAD * 2 + 24 + perRow * BOX_W + (perRow - 1) * GAP_X;
+  var height = PAD * 2 + rows * BOX_H + (rows - 1) * GAP_Y + (rows === 1 ? 40 : 0);
+  var label = nodes.map(function (n) { return n.label; }).join(" → ");
+  var svg = diagramSvg(width, height, label);
+  var left = PAD + 24;
+
+  var pos = nodes.map(function (node, i) {
+    var row = i < perRow ? 0 : 1;
+    var col = row === 0 ? i : perRow - 1 - (i - perRow);
+    return { x: left + col * (BOX_W + GAP_X), y: PAD + row * (BOX_H + GAP_Y), row: row };
+  });
+
+  nodes.forEach(function (node, i) {
+    diagramBox(svg, pos[i].x, pos[i].y, node.label, node.caption);
+    if (i === 0) return;
+    var a = pos[i - 1];
+    var b = pos[i];
+    if (a.row === b.row && b.x > a.x) arrow(svg, "M" + (a.x + BOX_W) + " " + (a.y + BOX_H / 2) + " H" + (b.x - 2));
+    else if (a.row === b.row) arrow(svg, "M" + a.x + " " + (a.y + BOX_H / 2) + " H" + (b.x + BOX_W + 2));
+    else arrow(svg, "M" + (a.x + BOX_W / 2) + " " + (a.y + BOX_H) + " V" + (b.y - 2));
+  });
+
+  // Feedback: from the last box back to the first, around the left edge or underneath.
+  var first = pos[0];
+  var last = pos[nodes.length - 1];
+  var feedback;
+  var labelX;
+  var labelY;
+  if (rows === 2) {
+    var fx = PAD + 8;
+    feedback = "M" + last.x + " " + (last.y + BOX_H / 2) + " H" + fx + " V" + (first.y + BOX_H / 2) + " H" + (first.x - 2);
+    labelX = (first.x + pos[perRow - 1].x + BOX_W) / 2;
+    labelY = first.y + BOX_H + GAP_Y / 2 + 4;
+  } else {
+    var fy = first.y + BOX_H + 22;
+    feedback = "M" + (last.x + BOX_W / 2) + " " + (last.y + BOX_H) + " V" + fy + " H" + (first.x + BOX_W / 2) + " V" + (first.y + BOX_H + 2);
+    labelX = (first.x + last.x + BOX_W) / 2;
+    labelY = fy + 14;
+  }
+  svg.appendChild(svgEl("path", { d: feedback, class: "bd-arrow bd-feedback", "marker-end": "url(#bd-head)" }));
+  if (diagram.loopRate) {
+    var rate = svgText(labelX, labelY, diagram.loopRate, "bd-rate");
+    svg.appendChild(rate);
+  }
+  return svg;
+}
+
+// The control system's layered view: supervision above, protection and archive
+// beside, simulation below the real-time chain.
+function renderLayers(diagram) {
+  var colW = BOX_W + GAP_X;
+  var width = PAD * 2 + 3 * BOX_W + 2 * GAP_X;
+  var rowY = [PAD, PAD + BOX_H + GAP_Y, PAD + 2 * (BOX_H + GAP_Y), PAD + 3 * (BOX_H + GAP_Y)];
+  var height = rowY[3] + BOX_H + PAD;
+  var svg = diagramSvg(width, height, diagram.middle.join(" → "));
+  var x = function (col) { return PAD + col * colW; };
+
+  // Top: supervision above the real-time box; protection beside it.
+  diagramBox(svg, x(1), rowY[0], diagram.above, diagram.aboveCaption, "bd-layer");
+  diagramBox(svg, x(2), rowY[0], diagram.beside[0], "", "bd-layer");
+  arrow(svg, "M" + (x(1) + BOX_W / 2) + " " + (rowY[0] + BOX_H) + " V" + (rowY[1] - 2));
+  arrow(svg, "M" + (x(2) + BOX_W / 2) + " " + (rowY[0] + BOX_H) + " L" + (x(1) + BOX_W - 8) + " " + (rowY[1] - 2));
+
+  // Middle: diagnostics → real-time control → actuators.
+  diagram.middle.forEach(function (label, i) {
+    diagramBox(svg, x(i), rowY[1], label, i === 1 ? diagram.middleCaption : "", i === 1 ? "bd-core" : "");
+    if (i > 0) arrow(svg, "M" + (x(i - 1) + BOX_W) + " " + (rowY[1] + BOX_H / 2) + " H" + (x(i) - 2));
+  });
+
+  // Archive beside, below the chain; simulation underneath.
+  diagramBox(svg, x(2), rowY[2], diagram.beside[1], "", "bd-layer");
+  arrow(svg, "M" + (x(1) + BOX_W - 8) + " " + (rowY[1] + BOX_H) + " L" + (x(2) + BOX_W / 2) + " " + (rowY[2] - 2));
+  diagramBox(svg, x(1), rowY[3], diagram.below, diagram.belowCaption, "bd-layer");
+  arrow(svg, "M" + (x(1) + BOX_W / 2) + " " + rowY[3] + " V" + (rowY[1] + BOX_H + 2));
+  return svg;
+}
+
+function renderDiagram(diagram) {
+  return diagram.layered ? renderLayers(diagram) : renderChain(diagram);
+}
+
+// ---------- Info panel ----------
+
 function renderPanel(part) {
-  var labels = window.CONTENT.views.tokamak.panelLabels;
+  var t = window.CONTENT.views.tokamak;
+  var labels = t.panelLabels;
   var panel = document.getElementById("info-panel");
   panel.textContent = "";
 
   panel.appendChild(el("h2", "panel-title", part.name));
   panel.appendChild(el("p", "panel-summary", part.summary));
 
-  Object.keys(labels).forEach(function (key) {
-    var section = el("section", "panel-section");
-    section.appendChild(el("h3", "", labels[key]));
-    if (part[key] === undefined) {
-      section.appendChild(el("p", "panel-pending", window.CONTENT.views.tokamak.panelPending));
-    }
-    panel.appendChild(section);
+  function section(key, body) {
+    var node = el("section", "panel-section");
+    var heading = el("h3", "", labels[key]);
+    node.appendChild(heading);
+    node.appendChild(body);
+    panel.appendChild(node);
+    return heading;
+  }
+
+  section("does", el("p", "", part.does));
+
+  var tech = el("ul", "panel-list");
+  part.tech.forEach(function (item) {
+    tech.appendChild(el("li", "", item));
   });
+  section("tech", tech);
+
+  var heading = section("control", el("p", "", part.control.text));
+  var badge = el("span", "speed-badge", part.control.speed);
+  badge.title = t.speedTitle;
+  heading.appendChild(badge);
+
+  section("testing", el("p", "", part.testing));
+  section("monitoring", el("p", "", part.monitoring));
+
+  var figure = el("div", "panel-diagram");
+  figure.appendChild(renderDiagram(part.diagram));
+  section("diagram", figure);
+
+  var sources = el("ol", "panel-sources");
+  part.sources.forEach(function (key) {
+    var source = window.CONTENT.sources[key];
+    var item = el("li");
+    var link = el("a", "", source.title);
+    link.href = source.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    item.appendChild(link);
+    sources.appendChild(item);
+  });
+  section("sources", sources);
 
   if (part.shapeLink) {
     var link = el("button", "panel-cta", window.CONTENT.shapes.cta);
@@ -404,6 +560,17 @@ function renderShapePicker() {
     });
     picker.appendChild(button);
   });
+  var sources = el("ol", "shapes-sources");
+  window.CONTENT.shapes.sources.forEach(function (key) {
+    var source = window.CONTENT.sources[key];
+    var link = el("a", "", source.title);
+    link.href = source.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    sources.appendChild(el("li")).appendChild(link);
+  });
+  document.getElementById("shapes").appendChild(sources);
+
   selectShape(window.CONTENT.shapes.defaultId, false);
 }
 
