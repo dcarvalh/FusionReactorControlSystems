@@ -368,7 +368,20 @@ main {
 }
 
 .frame-overview {
-  aspect-ratio: 16 / 5;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.frame-overview canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.frame-overview .frame-label {
+  z-index: 1;
+  top: auto;
+  bottom: var(--space-3);
 }
 
 .frame-cross-section {
@@ -901,6 +914,10 @@ main {
 
   .info-panel {
     position: static;
+  }
+
+  .frame-overview {
+    aspect-ratio: 4 / 3;
   }
 }
 
