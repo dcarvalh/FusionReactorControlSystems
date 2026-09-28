@@ -499,16 +499,6 @@ function renderPanel(part) {
     sources.appendChild(el("li")).appendChild(sourceLink(key));
   });
   section("sources", sources);
-
-  if (part.shapeLink) {
-    var link = el("button", "panel-cta", window.CONTENT.shapes.cta);
-    link.type = "button";
-    link.addEventListener("click", function () {
-      document.getElementById("shapes").scrollIntoView({ behavior: "smooth", block: "start" });
-      document.querySelector(".shape-button.is-selected").focus({ preventScroll: true });
-    });
-    panel.insertBefore(link, panel.children[3]);
-  }
 }
 
 // Highlight a part everywhere and show it in the panel. The hash records the
