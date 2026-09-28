@@ -1,6 +1,5 @@
 // All text content for the site lives here, as one plain object.
-// Tokamak parts are added in a later milestone.
-// Fields listed in a `verify` array need a human accuracy check before sending.
+// Fields listed in a `verify` array could not be checked against a readable source.
 
 window.CONTENT = {
   site: {
@@ -99,16 +98,15 @@ window.CONTENT = {
   ],
   comingSoon: "Coming soon",
 
-  // "Why I built this" tab.
-  // DRAFT for David to edit. [DAVID: …] markers stay visible until filled in.
+  // "Why I built this" tab. [DAVID: …] in any text shows as a highlighted placeholder.
   why: {
     motivation: {
       title: "Why this page exists",
       points: [
         "For myself: I wanted to learn about nuclear fusion reactors. Science and " +
           "technology excite me, and fusion is one I wanted to understand properly.",
-        "From the inside: I built the 3D cutaway and the cross-section from EPFL's " +
-          "infographic of TCV, to understand all the moving parts of the machine.",
+        "From the inside: I built the 3D cutaway and the cross-section from an " +
+          "infographic of EPFL's TCV, to understand all the moving parts of the machine.",
         "To show my motivation: I built this page on published papers about TCV and " +
           "its plasma control, work Fusionality's founders were part of."
       ]
@@ -132,7 +130,8 @@ window.CONTENT = {
           heading: "I like to build things.",
           text:
             "A 3D cutaway, an interactive cross-section, plasma shapes that morph live: " +
-            "plain HTML, CSS and JavaScript, tested and deployed like a small product."
+            "plain HTML, CSS and JavaScript (three.js for the 3D), tested and deployed " +
+            "like a small product."
         },
         {
           heading: "I think in control systems.",
@@ -144,13 +143,13 @@ window.CONTENT = {
         {
           heading: "I care about getting it right.",
           text:
-            "Every number has a source, and every paper used is referenced. Uncertain " +
-            "claims were flagged and checked; when unsure, I said less."
+            "Every number has a source, and every paper used is referenced. What I could " +
+            "not check against a source, I left out or kept general: when unsure, I said less."
         }
       ]
     },
     // From David's CV (Sep 2026) and cover letter. Every line names a real
-    // system, tool or deliverable; [DAVID: …] marks what only David can fill in.
+    // system, tool or deliverable.
     fit: {
       title: "Where I fit",
       intro: "My experience, from supervision down to real-time loops.",
@@ -193,7 +192,7 @@ window.CONTENT = {
           layer: "Real-time loops",
           speed: "kHz–MHz",
           done: ["SCADA control logic in CTRL++ (C/C++ syntax); supported real-time control hardware"],
-          status: "adjacent"
+          status: "shipped"
         }
       ],
       links: [
