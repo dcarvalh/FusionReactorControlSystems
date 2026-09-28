@@ -104,7 +104,7 @@ window.CONTENT = {
     motivation: {
       title: "Why this page exists",
       points: [
-        "For myself: I wanted to learn about nuclear fusion reactors. Science and " +
+        "Curiosity: I wanted to learn about nuclear fusion reactors. Science and " +
           "technology excite me, and fusion is one I wanted to understand properly.",
         "From the inside: I built the 3D cutaway and the cross-section from an " +
           "infographic of EPFL's TCV, to understand all the moving parts of the machine.",
