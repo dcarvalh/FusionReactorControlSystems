@@ -28,6 +28,8 @@ window.CONTENT = {
     tokamak: {
       back: "← All machines",
       title: "Tokamak",
+      inspired:
+        "Inspired by TCV (Tokamak à Configuration Variable) at EPFL's Swiss Plasma Center, Lausanne",
       intro:
         "The whole machine in 3D, and a poloidal cross-section: a slice through the doughnut. " +
         "Select a part in either view to see what it does and how it is controlled.",
@@ -108,7 +110,7 @@ window.CONTENT = {
         "I wanted to see that from the inside: one machine, each part mapped " +
           "to the loops that control it.",
         "Built from published papers on TCV; every number links to its source. " +
-          "[DAVID: why fusion, and why now]"
+          "After five years at CERN, I want to keep working on science, and on fusion in particular."
       ]
     },
     showcase: {
@@ -130,8 +132,9 @@ window.CONTENT = {
         {
           heading: "I take work into operation.",
           text:
-            "Designed, tested and deployed like a small product. " +
-            "[DAVID: one example of a system you commissioned]"
+            "Designed, tested and deployed like a small product. At CERN I owned testing " +
+            "of the SCADA applications commissioned during Long Shutdown 2; at SKAN, " +
+            "on-site commissioning through handover and acceptance."
         },
         {
           heading: "I explain complex systems simply.",
@@ -143,13 +146,95 @@ window.CONTENT = {
         }
       ]
     },
+    // From David's CV (Sep 2026) and cover letter. Every line names a real
+    // system, tool or deliverable; [DAVID: …] marks what only David can fill in.
     fit: {
       title: "Where I fit",
       intro:
-        "My work experience, mapped onto the same control stack: supervisory and " +
-        "SCADA, plant integration and fieldbuses, hardware-in-the-loop testing, " +
-        "real-time software, and commissioning.",
-      placeholder: "Coming in a later update."
+        "My work experience, mapped onto a control stack like the one on this page, " +
+        "from supervision down to real-time loops.",
+      columns: { layer: "Layer", done: "What I've done", status: "Status" },
+      statusLabels: {
+        shipped: "Shipped in production",
+        adjacent: "Adjacent",
+        learning: "Learning now",
+        personal: "Personal project"
+      },
+      rows: [
+        {
+          layer: "Supervisory & SCADA",
+          speed: "seconds",
+          done: [
+            "CERN: WinCC OA SCADA for the power converter control systems: control libraries, HMI widgets and operator panels in CTRL++, deployed on Linux servers",
+            "SKAN: SCADA process visualisation and data acquisition for pharmaceutical production, in C# and SQL (zenon)"
+          ],
+          status: "shipped"
+        },
+        {
+          layer: "Distributed control & plant integration",
+          speed: "ms",
+          done: [
+            "CERN: designed, commissioned and maintained the distributed control for high-power converter plants across the accelerator complex: tens of Siemens PLCs, thousands of IO points",
+            "Protocols between field devices and SCADA: IEC-104, MODBUS, PROFINET, PROFIBUS, OPC-UA",
+            "SKAN: integration between the supervisory layer, MES, PLCs and customer IT-OT infrastructure"
+          ],
+          status: "shipped"
+        },
+        {
+          layer: "Test benches & hardware-in-the-loop",
+          done: [
+            "CERN: led the Python CI/CD framework that validates control software before it reaches a machine: pytest suites generated from specification sheets, HIL and functional tests on industrial control hardware",
+            "GitLab CI runners on Windows and Linux, with automated log analysis and reports",
+            "Recruited and supervised a Master's student on the framework"
+          ],
+          status: "shipped"
+        },
+        {
+          layer: "Requirements, validation & commissioning",
+          done: [
+            "SKAN: customer requirements into technical specifications; test plans for GMP system qualification, traceable from requirement to evidence",
+            "SKAN: on-site commissioning, handover and acceptance on Windows Server and VMware ESXi",
+            "CERN: owned testing of the new SCADA applications commissioned during Long Shutdown 2, through machine restart"
+          ],
+          status: "shipped"
+        },
+        {
+          layer: "Operations & support",
+          done: [
+            "CERN: 24/7 standby for the power converter control systems, covering the full control chain",
+            "Coordinated the section's five-person support team for real-time control software and hardware (from 2023)"
+          ],
+          status: "shipped"
+        },
+        {
+          layer: "Hard real-time loops (C/C++, RTOS, FPGA)",
+          speed: "kHz–MHz",
+          done: ["[DAVID: honest current state + what you're doing about it]"],
+          status: "learning"
+        },
+        {
+          layer: "Control modelling & tooling",
+          done: [
+            "This page: a tokamak's parts and control loops, from published TCV papers",
+            "PID Playground: Python/Jupyter, simulation kept separate from the UI",
+            "MSc thesis: time-series forecasting in MATLAB (ARIMA, SARIMA, supervised learning)"
+          ],
+          status: "personal"
+        }
+      ],
+      highlight: {
+        title: "A real-time system I took into operation",
+        text:
+          "[DAVID: 3–4 lines: what it did, its loop rate or timing, your role, and how " +
+          "you tested and commissioned it]"
+      },
+      links: [
+        { label: "Website", url: "https://davidcarvalho.work" },
+        { label: "GitHub", url: "https://github.com/dcarvalh" },
+        { label: "LinkedIn", text: "[DAVID: LinkedIn URL]" },
+        { label: "Email", text: "[DAVID: show your email here?]" },
+        { label: "CV (PDF)", text: "[DAVID: add the CV PDF to the repo?]" }
+      ]
     }
   },
 
