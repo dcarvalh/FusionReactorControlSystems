@@ -1051,23 +1051,6 @@ main {
   color: var(--text-muted);
 }
 
-.panel-cta {
-  margin-bottom: var(--space-4);
-  padding: var(--space-2) var(--space-3);
-  border: var(--stroke) solid var(--select);
-  border-radius: var(--radius);
-  background: none;
-  color: var(--select);
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  cursor: pointer;
-  transition: background var(--transition);
-}
-
-.panel-cta:hover {
-  background: var(--surface-raised);
-}
-
 .panel-section {
   padding: var(--space-3) 0;
   border-top: var(--stroke) solid var(--line-soft);

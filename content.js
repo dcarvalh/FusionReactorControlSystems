@@ -230,7 +230,6 @@ window.CONTENT = {
       summary:
         "The hot, electrically charged gas being controlled. It follows the magnetic " +
         "field lines, which wind around the doughnut on nested surfaces.",
-      shapeLink: true,
       simple: {
         does:
           "A gas so hot it becomes electrically charged. Magnetic fields hold it in the " +
@@ -326,7 +325,6 @@ window.CONTENT = {
       summary:
         "Rings of coils inside and outside the plasma that set its position and shape. " +
         "TCV has 16, each with its own power supply, plus fast coils inside the vessel.",
-      shapeLink: true,
       simple: {
         does:
           "Rings of coils that push and pull on the plasma to set where it sits and what " +
@@ -435,7 +433,6 @@ window.CONTENT = {
       "Shapes simplified from EPFL's published TCV equilibria; illustrative, not to scale. " +
       "The thin lines inside the plasma are magnetic surfaces: the field lines wind around " +
       "the doughnut on them.",
-    cta: "Try it: shape the plasma ↑",
     defaultId: "diverted",
     items: [
       {
