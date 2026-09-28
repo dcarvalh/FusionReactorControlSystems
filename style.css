@@ -163,9 +163,65 @@ a:hover {
   text-decoration: none;
 }
 
-.nav a[aria-current="page"] {
+.nav a[aria-current="page"],
+.nav-button[aria-current="page"] {
   color: var(--text);
   border-bottom-color: var(--select);
+}
+
+/* "Select your machine" and its small menu */
+.nav-item {
+  position: relative;
+}
+
+.nav-button {
+  padding: var(--space-1) 0;
+  border: 0;
+  border-bottom: var(--stroke) solid transparent;
+  background: none;
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.nav-button::after {
+  content: " ▾";
+  font-size: 0.8em;
+}
+
+.nav-button:hover {
+  color: var(--text);
+}
+
+.nav-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 160px;
+  margin: 0;
+  padding: var(--space-1);
+  list-style: none;
+  border: var(--stroke) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.nav .nav-menu a {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.nav .nav-menu a:hover,
+.nav .nav-menu a:focus-visible {
+  background: var(--surface);
+  color: var(--select);
 }
 
 /* ---------- Views ---------- */
@@ -192,7 +248,7 @@ main {
 .intro {
   max-width: 60ch;
   margin-top: var(--space-2);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-5);
   color: var(--text-muted);
 }
 
@@ -734,13 +790,7 @@ main {
 /* ---------- Shape the plasma ---------- */
 
 .shapes-bar {
-  position: sticky;
-  bottom: 0;
-  z-index: 3;
-  padding: var(--space-3) 0 var(--space-3);
-  border-top: var(--stroke) solid var(--line);
-  background: var(--bg);
-  box-shadow: 0 -16px 24px -8px var(--bg);
+  padding-bottom: var(--space-1);
 }
 
 .shapes-head {
@@ -756,6 +806,11 @@ main {
 
 .shapes-about {
   font-size: var(--text-sm);
+}
+
+.shapes-about h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-md);
 }
 
 .shape-picker {
@@ -1062,12 +1117,6 @@ main {
 
   .xs .vessel .xs-label {
     font-size: 14px;
-  }
-
-  /* On small screens a sticky bar would cover too much: keep it in the flow */
-  .shapes-bar {
-    position: static;
-    box-shadow: none;
   }
 
   .shapes-head {

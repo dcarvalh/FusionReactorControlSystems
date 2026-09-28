@@ -25,7 +25,13 @@
   <header class="topbar">
     <a class="brand" href="#home" data-text="site.title"></a>
     <nav class="nav" aria-label="Main">
-      <a href="#home" data-view-link="home" data-text="nav.home"></a>
+      <!-- "Select your machine" opens a small menu (hover, click or keyboard) -->
+      <div class="nav-item" id="machine-nav">
+        <button class="nav-button" type="button" aria-expanded="false" aria-controls="machine-menu" data-view-link="home" data-text="nav.home"></button>
+        <ul class="nav-menu" id="machine-menu" hidden>
+          <li><a href="#tokamak" data-text="nav.tokamak"></a></li>
+        </ul>
+      </div>
       <a href="#why" data-view-link="why" data-text="nav.why"></a>
     </nav>
   </header>
@@ -46,6 +52,14 @@
       <p class="intro" data-text="views.tokamak.intro"></p>
       <div class="tokamak-layout">
         <div class="visuals">
+          <!-- Shape the plasma: right above the 3D view, so the morph is in view -->
+          <section class="shapes-bar" id="shapes" aria-labelledby="shapes-title">
+            <div class="shapes-head">
+              <h2 id="shapes-title" data-text="shapes.title"></h2>
+              <div class="shape-detail" id="shape-detail" aria-live="polite"></div>
+            </div>
+            <div class="shape-picker" id="shape-picker" role="group" aria-labelledby="shapes-title"></div>
+          </section>
           <figure class="frame frame-overview" id="overview">
             <figcaption class="frame-label" data-text="views.tokamak.overviewLabel"></figcaption>
           </figure>
@@ -141,16 +155,8 @@
             <h2 id="parts-list-title" data-text="views.tokamak.listTitle"></h2>
             <ul id="parts-list"></ul>
           </nav>
-          <!-- Shape the plasma: sticks to the bottom of the screen (desktop) while
-               the 3D view and cross-section are in view, so the morph stays visible -->
-          <section class="shapes-bar" id="shapes" aria-labelledby="shapes-title">
-            <div class="shapes-head">
-              <h2 id="shapes-title" data-text="shapes.title"></h2>
-              <div class="shape-detail" id="shape-detail" aria-live="polite"></div>
-            </div>
-            <div class="shape-picker" id="shape-picker" role="group" aria-labelledby="shapes-title"></div>
-          </section>
           <section class="shapes-about" id="shapes-about">
+            <h2 data-text="shapes.aboutTitle"></h2>
             <p class="muted" data-text="shapes.intro"></p>
             <p class="shapes-note" data-text="shapes.note"></p>
           </section>
