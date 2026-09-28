@@ -121,6 +121,13 @@ window.CONTENT = {
             "is how the machine started to make sense."
         },
         {
+          heading: "I think in control systems.",
+          text:
+            "Every part follows the same pattern: sensors, estimation, controller, " +
+            "actuator, loop speed, testing, supervision. The same pattern as my " +
+            "SCADA and hardware-in-the-loop work at CERN."
+        },
+        {
           heading: "I explain complex systems simply.",
           text:
             "Written for an engineer outside fusion: the 3D view, the cross-section and " +
@@ -132,13 +139,6 @@ window.CONTENT = {
             "A 3D cutaway, an interactive cross-section, plasma shapes that morph live: " +
             "plain HTML, CSS and JavaScript (three.js for the 3D), tested and deployed " +
             "like a small product."
-        },
-        {
-          heading: "I think in control systems.",
-          text:
-            "Every part follows the same pattern: sensors, estimation, controller, " +
-            "actuator, loop speed, testing, supervision. The same pattern as my " +
-            "SCADA and hardware-in-the-loop work at CERN."
         },
         {
           heading: "I care about getting it right.",
