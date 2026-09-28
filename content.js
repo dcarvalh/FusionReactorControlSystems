@@ -115,13 +115,13 @@ window.CONTENT = {
       ]
     },
     showcase: {
-      title: "What it is meant to show",
+      title: "What I hope to show",
       items: [
         {
           heading: "Fast learner.",
           text:
-            "I knew nothing about how nuclear fusion reactors work. Building this page " +
-            "is how the machine started to make sense."
+            "I knew nothing about how nuclear fusion reactors really work. Building this " +
+            "page was my way of learning how these machines work."
         },
         {
           heading: "Control systems approach.",
