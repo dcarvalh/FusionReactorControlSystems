@@ -517,8 +517,9 @@ function selectShape(id, animate) {
   });
   var detail = document.getElementById("shape-detail");
   detail.textContent = "";
-  detail.appendChild(el("h3", "", item.name));
-  detail.appendChild(el("p", "muted", item.text));
+  detail.appendChild(el("strong", "", item.name));
+  detail.appendChild(document.createTextNode(" "));
+  detail.appendChild(el("span", "muted", item.text));
 
   var glowB = document.getElementById("plasma-glow-b");
   var extras = document.getElementById("plasma-extras");
@@ -593,7 +594,7 @@ function renderShapePicker() {
   window.CONTENT.shapes.sources.forEach(function (key) {
     sources.appendChild(el("li")).appendChild(sourceLink(key));
   });
-  document.getElementById("shapes").appendChild(sources);
+  document.getElementById("shapes-about").appendChild(sources);
 
   selectShape(window.CONTENT.shapes.defaultId, false);
 }

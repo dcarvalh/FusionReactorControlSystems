@@ -617,29 +617,44 @@ main {
 
 /* ---------- Shape the plasma ---------- */
 
-.shapes {
-  padding-top: var(--space-5);
-  border-top: var(--stroke) solid var(--line-soft);
+.shapes-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  padding: var(--space-3) 0 var(--space-3);
+  border-top: var(--stroke) solid var(--line);
+  background: var(--bg);
+  box-shadow: 0 -16px 24px -8px var(--bg);
 }
 
-.shapes h2 {
-  margin-bottom: var(--space-2);
-  font-size: var(--text-lg);
+.shapes-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.shapes-bar h2 {
+  flex: none;
+  font-size: var(--text-md);
+}
+
+.shapes-about {
+  font-size: var(--text-sm);
 }
 
 .shape-picker {
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: var(--space-2);
-  margin: var(--space-4) 0;
+  margin-top: var(--space-2);
 }
 
 .shape-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-1);
+  gap: 2px;
+  padding: var(--space-1);
   border: var(--stroke) solid var(--line-soft);
   border-radius: var(--radius);
   background: var(--surface);
@@ -662,7 +677,7 @@ main {
 
 .shape-thumb {
   width: 100%;
-  max-width: 56px;
+  max-width: 22px;
   height: auto;
 }
 
@@ -693,16 +708,17 @@ main {
 }
 
 .shape-detail {
-  min-height: 5.5em;
+  min-height: 2.9em;
+  font-size: var(--text-sm);
+  line-height: 1.45;
 }
 
-.shape-detail h3 {
-  margin-bottom: var(--space-1);
-  font-size: var(--text-md);
+.shape-detail strong {
+  font-weight: 500;
 }
 
 .shapes-note {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
   font-size: var(--text-xs);
   color: var(--text-faint);
 }
@@ -910,6 +926,24 @@ main {
 
   .shape-picker {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* On small screens a sticky bar would cover too much: keep it in the flow */
+  .shapes-bar {
+    position: static;
+    box-shadow: none;
+  }
+
+  .shapes-head {
+    display: block;
+  }
+
+  .shapes-bar h2 {
+    margin-bottom: var(--space-1);
+  }
+
+  .shape-thumb {
+    max-width: 44px;
   }
 
   .info-panel {
