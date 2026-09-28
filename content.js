@@ -39,8 +39,7 @@ window.CONTENT = {
         plasma: "Plasma",
         tf: "Toroidal field coil",
         pf: "Shaping coils",
-        cs: "Central solenoid",
-        control: "Control system"
+        cs: "Central solenoid"
       },
       listTitle: "All parts",
       panelEmpty: "Select a part of the machine to see how it works.",
@@ -54,7 +53,7 @@ window.CONTENT = {
         sources: "Sources"
       },
       speedTitle: "Fastest loop timescale",
-      modes: { eli5: "ELI5", complete: "Complete" },
+      modes: { simple: "Simple", complete: "Complete" },
       modeLabel: "Level of detail",
       sourcesLabel: "Sources"
     },
@@ -164,13 +163,10 @@ window.CONTENT = {
     hofmann1997: { title: "Hofmann et al., Feedback stabilization of axisymmetric modes in TCV (1997)", url: "https://www.osti.gov/etdeweb/biblio/587784" },
     dutch1995: { title: "Dutch et al., Experimental and theoretical growth rates of the vertical instability in TCV (1995)", url: "https://www.osti.gov/etdeweb/biblio/176266" },
     coda2010: { title: "Coda, Progress and scientific results in the TCV tokamak (2010)", url: "https://www.osti.gov/etdeweb/biblio/21562879" },
-    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)" },
-    le2014: { title: "Le et al., Distributed digital real-time control system for TCV tokamak (2014)" },
-    galperti2024: { title: "Galperti et al., Overview of the TCV digital real-time plasma control system and its applications (2024)" },
-    moret2015: { title: "Moret et al., Tokamak equilibrium reconstruction code LIUQE and its real time implementation (2015)" }
+    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)" }
   },
 
-  // The 5 tokamak parts, following EPFL's TCV infographic.
+  // The 4 tokamak parts, following EPFL's TCV infographic.
   // `verify` lists fields to double-check before sending.
   parts: [
     {
@@ -180,7 +176,7 @@ window.CONTENT = {
         "The hot, electrically charged gas being controlled. It follows the magnetic " +
         "field lines, which wind around the doughnut on nested surfaces.",
       shapeLink: true,
-      eli5: {
+      simple: {
         does:
           "A gas so hot it becomes electrically charged. Magnetic fields hold it in the " +
           "middle of the vessel, away from the walls.",
@@ -231,7 +227,7 @@ window.CONTENT = {
       summary:
         "The large coils wrapped around the doughnut. They make the main magnetic " +
         "field, which runs the long way round.",
-      eli5: {
+      simple: {
         does:
           "Big coils around the doughnut that make the main magnetic field. The plasma's " +
           "particles follow that field instead of hitting the wall.",
@@ -276,7 +272,7 @@ window.CONTENT = {
         "Rings of coils inside and outside the plasma that set its position and shape. " +
         "TCV has 16, each with its own power supply, plus fast coils inside the vessel.",
       shapeLink: true,
-      eli5: {
+      simple: {
         does:
           "Rings of coils that push and pull on the plasma to set where it sits and what " +
           "shape it has.",
@@ -329,7 +325,7 @@ window.CONTENT = {
       summary:
         "The transformer at the centre. Changing its current induces the electric " +
         "current that flows in the plasma.",
-      eli5: {
+      simple: {
         does:
           "A transformer in the middle. Changing its current makes a current flow in the " +
           "plasma, which heats it and helps hold it together.",
@@ -369,55 +365,6 @@ window.CONTENT = {
       },
       sources: ["tcvWiki", "degrave2022"],
       verify: ["tech", "control"]
-    },
-    {
-      id: "control",
-      name: "Control system",
-      summary:
-        "Measures the plasma with sensors and adjusts the coils, heating and fuelling in real time.",
-      eli5: {
-        does:
-          "The brain of the machine. It reads the sensors, works out what the plasma is " +
-          "doing, and tells the coils, heaters and fuel valves what to do.",
-        tech: ["Real-time computers running control code", "A simulator to test code before each shot", "Safety systems that can stop a shot"],
-        control:
-          "Fast loops for the plasma (a millisecond or less), slower ones for running the " +
-          "shot, and protection watching over everything."
-      },
-      does:
-        "Runs each shot: reads the sensors, works out the plasma's state, and commands " +
-        "coils, heating and fuelling. Around that sit shot sequencing, machine " +
-        "protection and the data archive.",
-      tech: [
-        "TCV's digital control system, SCD (Système de Contrôle Distribué)",
-        "Algorithms in MATLAB/Simulink, with run-time code generated automatically; recent versions use the open-source MARTe2 framework",
-        "Real-time equilibrium reconstruction (RT-LIUQE): the plasma's shape from magnetic measurements",
-        "A reinforcement-learning controller from DeepMind and EPFL ran at 10 kHz, commanding all 19 coils"
-      ],
-      control: {
-        text:
-          "In layers by speed: real-time plasma control (µs to ms), shot sequencing and " +
-          "supervision (seconds), and machine protection, which can stop a shot at any time.",
-        speed: "µs"
-      },
-      testing:
-        "Control code runs in simulation before a shot. DeepMind's controller was " +
-        "benchmarked before deployment to check it met its timing every cycle.",
-      monitoring:
-        "The supervisory layer: plant state, alarms and interlocks. Every shot's signals " +
-        "are archived for analysis afterwards.",
-      diagram: {
-        layered: true,
-        middle: ["Diagnostics", "Real-time control", "Actuators"],
-        middleCaption: "µs–ms",
-        above: "Supervisory / sequencing",
-        aboveCaption: "seconds",
-        beside: ["Machine protection", "Data archive"],
-        below: "Simulation",
-        belowCaption: "before each shot"
-      },
-      sources: ["le2014", "galperti2024", "moret2015", "degrave2022"],
-      verify: ["tech", "control", "testing", "monitoring"]
     }
   ],
 

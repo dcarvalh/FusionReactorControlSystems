@@ -1,6 +1,6 @@
 // Plasma shape geometry for the cross-section: pure functions, no DOM.
 //
-// Coordinates are in the cross-section SVG (viewBox 0 0 620 750). The vessel's
+// Coordinates are in the cross-section SVG (viewBox 0 0 540 750). The vessel's
 // inner wall spans x 164–316 and y 124–596, with cut outboard corners like TCV.
 // Shapes are simplified from EPFL's published TCV equilibria; they are
 // illustrative, not reconstructions.

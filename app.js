@@ -330,45 +330,15 @@ function renderChain(diagram) {
   return svg;
 }
 
-// The control system's layered view: supervision above, protection and archive
-// beside, simulation below the real-time chain.
-function renderLayers(diagram) {
-  var colW = BOX_W + GAP_X;
-  var width = PAD * 2 + 3 * BOX_W + 2 * GAP_X;
-  var rowY = [PAD, PAD + BOX_H + GAP_Y, PAD + 2 * (BOX_H + GAP_Y), PAD + 3 * (BOX_H + GAP_Y)];
-  var height = rowY[3] + BOX_H + PAD;
-  var svg = diagramSvg(width, height, diagram.middle.join(" → "));
-  var x = function (col) { return PAD + col * colW; };
-
-  // Top: supervision above the real-time box; protection beside it.
-  diagramBox(svg, x(1), rowY[0], diagram.above, diagram.aboveCaption, "bd-layer");
-  diagramBox(svg, x(2), rowY[0], diagram.beside[0], "", "bd-layer");
-  arrow(svg, "M" + (x(1) + BOX_W / 2) + " " + (rowY[0] + BOX_H) + " V" + (rowY[1] - 2));
-  arrow(svg, "M" + (x(2) + BOX_W / 2) + " " + (rowY[0] + BOX_H) + " L" + (x(1) + BOX_W - 8) + " " + (rowY[1] - 2));
-
-  // Middle: diagnostics → real-time control → actuators.
-  diagram.middle.forEach(function (label, i) {
-    diagramBox(svg, x(i), rowY[1], label, i === 1 ? diagram.middleCaption : "", i === 1 ? "bd-core" : "");
-    if (i > 0) arrow(svg, "M" + (x(i - 1) + BOX_W) + " " + (rowY[1] + BOX_H / 2) + " H" + (x(i) - 2));
-  });
-
-  // Archive beside, below the chain; simulation underneath.
-  diagramBox(svg, x(2), rowY[2], diagram.beside[1], "", "bd-layer");
-  arrow(svg, "M" + (x(1) + BOX_W - 8) + " " + (rowY[1] + BOX_H) + " L" + (x(2) + BOX_W / 2) + " " + (rowY[2] - 2));
-  diagramBox(svg, x(1), rowY[3], diagram.below, diagram.belowCaption, "bd-layer");
-  arrow(svg, "M" + (x(1) + BOX_W / 2) + " " + rowY[3] + " V" + (rowY[1] + BOX_H + 2));
-  return svg;
-}
-
 function renderDiagram(diagram) {
-  return diagram.layered ? renderLayers(diagram) : renderChain(diagram);
+  return renderChain(diagram);
 }
 
 // ---------- Info panel ----------
 
-// "ELI5" shows a short, plain version; "Complete" shows every section.
+// "Simple" shows a short, plain version; "Complete" shows every section.
 // The choice is remembered in this browser when storage is available.
-var panelMode = "eli5";
+var panelMode = "simple";
 try {
   if (localStorage.getItem("panelMode") === "complete") panelMode = "complete";
 } catch (e) {}
@@ -386,7 +356,7 @@ function renderModeSwitch() {
   var group = el("div", "mode-switch");
   group.setAttribute("role", "group");
   group.setAttribute("aria-label", t.modeLabel);
-  ["eli5", "complete"].forEach(function (mode) {
+  ["simple", "complete"].forEach(function (mode) {
     var button = el("button", "mode-button", t.modes[mode]);
     button.type = "button";
     button.setAttribute("aria-pressed", panelMode === mode ? "true" : "false");
@@ -403,7 +373,7 @@ function renderPanel(part) {
   var t = window.CONTENT.views.tokamak;
   var labels = t.panelLabels;
   var complete = panelMode === "complete";
-  var text = complete ? part : part.eli5;
+  var text = complete ? part : part.simple;
   var panel = document.getElementById("info-panel");
   panel.textContent = "";
 
