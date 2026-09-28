@@ -192,10 +192,16 @@ function renderFit(fit) {
     layer.appendChild(el("span", "", row.layer));
     if (row.speed) layer.appendChild(el("span", "fit-speed", row.speed));
 
-    var done = el("ul", "fit-cell fit-done");
-    row.done.forEach(function (item) {
-      done.appendChild(el("li", "", item));
-    });
+    // One item reads as a line of text; several as a list.
+    var done;
+    if (row.done.length === 1) {
+      done = el("p", "fit-cell fit-done fit-single", row.done[0]);
+    } else {
+      done = el("ul", "fit-cell fit-done");
+      row.done.forEach(function (item) {
+        done.appendChild(el("li", "", item));
+      });
+    }
 
     var status = el("div", "fit-cell");
     status.appendChild(el("span", "status-chip status-" + row.status, fit.statusLabels[row.status]));
