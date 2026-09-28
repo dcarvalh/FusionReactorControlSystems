@@ -29,8 +29,8 @@ window.CONTENT = {
       back: "← All machines",
       title: "Tokamak",
       intro:
-        "A poloidal cross-section: a slice through the doughnut. " +
-        "Select a part to see what it does and how it is controlled.",
+        "The whole machine in 3D, and a poloidal cross-section: a slice through the doughnut. " +
+        "Select a part in either view to see what it does and how it is controlled.",
       overviewLabel: "3D cutaway · cyan plane = the slice below",
       crossSectionLabel: "Cross-section · TCV-inspired · illustrative, not to scale",
       axisLabel: "axis of the doughnut",
@@ -42,7 +42,7 @@ window.CONTENT = {
         cs: "Central solenoid"
       },
       listTitle: "All parts",
-      panelEmpty: "Select a part of the machine to see how it works.",
+      panelEmpty: "Select a part in the 3D view or the cross-section to see how it works.",
       panelLabels: {
         does: "What it does",
         tech: "Key technologies",
