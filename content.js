@@ -34,9 +34,14 @@ window.CONTENT = {
       overviewLabel: "Overview · 3D view coming later",
       crossSectionLabel: "Cross-section · TCV-inspired · illustrative, not to scale",
       axisLabel: "axis of the doughnut",
-      plantLabel: "Power supplies · flywheel generator · cooling · vacuum",
-      controlLabel: "Control room",
-      nbiLabel: "NBI",
+      vesselLabel: "vacuum vessel",
+      labels: {
+        plasma: "Plasma",
+        tf: "Toroidal field coil",
+        pf: "Shaping coils",
+        cs: "Central solenoid",
+        control: "Control system"
+      },
       listTitle: "All parts",
       panelEmpty: "Select a part of the machine to see how it works.",
       panelLabels: {
@@ -147,16 +152,118 @@ window.CONTENT = {
     }
   },
 
-  // The 9 tokamak parts. Detailed content is filled in milestone M3.
+  // The 5 tokamak parts, following EPFL's TCV infographic. Detailed content comes next.
   parts: [
-    { id: "plasma", name: "Plasma", summary: "The thing being controlled." },
-    { id: "tf", name: "Toroidal field coils", summary: "The large coils that make the main magnetic field." },
-    { id: "pf", name: "Poloidal field system", summary: "Ohmic transformer, shaping coils and fast in-vessel coils." },
-    { id: "vessel", name: "Vacuum vessel & divertor", summary: "The vacuum chamber, and where the exhaust heat lands." },
-    { id: "heating", name: "Heating", summary: "Microwaves (ECRH) and neutral beams (NBI)." },
-    { id: "fuelling", name: "Fuelling", summary: "Gas valves that feed fuel into the plasma." },
-    { id: "diagnostics", name: "Diagnostics", summary: "The measurement layer." },
-    { id: "plant", name: "Power supplies & plant", summary: "Power for coils and heating, plus cooling and vacuum." },
-    { id: "control", name: "Control room", summary: "The control and data system." }
-  ]
+    {
+      id: "plasma",
+      name: "Plasma",
+      summary:
+        "The hot, electrically charged gas being controlled. It follows the magnetic " +
+        "field lines, which wind around the doughnut on nested surfaces.",
+      shapeLink: true
+    },
+    {
+      id: "tf",
+      name: "Toroidal field coils",
+      summary:
+        "The large coils wrapped around the doughnut. They make the main magnetic " +
+        "field, which runs the long way round."
+    },
+    {
+      id: "pf",
+      name: "Shaping coils (poloidal field)",
+      summary:
+        "Rings of coils inside and outside the plasma that set its position and shape. " +
+        "TCV has 16, each with its own power supply, plus two fast coils inside the vessel.",
+      shapeLink: true
+    },
+    {
+      id: "cs",
+      name: "Central solenoid",
+      summary:
+        "The transformer at the centre. Changing its current induces the electric " +
+        "current that flows in the plasma."
+    },
+    {
+      id: "control",
+      name: "Control system",
+      summary:
+        "Measures the plasma with sensors and adjusts the coils, heating and fuelling in real time."
+    }
+  ],
+
+  // "Shape the plasma": EPFL's TCV plasma shapes, simplified.
+  shapes: {
+    title: "Shape the plasma",
+    intro:
+      "Plasma follows the magnetic field lines, so changing the field changes its shape. " +
+      "TCV's tall vessel and 16 independently powered shaping coils let it make many " +
+      "shapes with the same hardware: only the coil currents change.",
+    note:
+      "Shapes simplified from EPFL's published TCV equilibria; illustrative, not to scale. " +
+      "The thin lines inside the plasma are magnetic surfaces: the field lines wind around " +
+      "the doughnut on them.",
+    cta: "Try it: shape the plasma ↓",
+    defaultId: "diverted",
+    items: [
+      {
+        id: "limited",
+        name: "Limited",
+        text: "The plasma's edge rests directly on a wall surface."
+      },
+      {
+        id: "diverted",
+        name: "Diverted",
+        text:
+          "The edge is set by an X-point, where the poloidal field vanishes. Exhaust heat " +
+          "flows along the legs to the divertor, away from the main plasma.",
+        verify: ["text"]
+      },
+      {
+        id: "elongated",
+        name: "Elongated",
+        text:
+          "Stretched tall. TCV experiments showed extreme elongation helps raise plasma " +
+          "pressure while keeping it stable. The catch: tall plasmas are vertically " +
+          "unstable and need fast feedback to stay in place.",
+        verify: ["text"]
+      },
+      {
+        id: "positive",
+        name: "Positive triangularity",
+        short: "D shape",
+        text: "The classic D shape, with its flat side facing the machine's axis.",
+        verify: ["text"]
+      },
+      {
+        id: "negative",
+        name: "Negative triangularity",
+        short: "Reversed D",
+        text: "The D reversed. Same coils, different currents: TCV can make both."
+      },
+      {
+        id: "doubleNull",
+        name: "Double null",
+        text: "Two X-points, one above and one below the plasma."
+      },
+      {
+        id: "snowflake",
+        name: "Snowflake",
+        text:
+          "First produced on TCV. A second-order null splits the exhaust into more legs, " +
+          "to spread the heat.",
+        verify: ["text"]
+      },
+      {
+        id: "droplets",
+        name: "Droplets",
+        text: "Two separate plasmas held at once in one vessel."
+      }
+    ],
+    sources: [
+      { title: "EPFL Swiss Plasma Center: TCV plasma shapes", url: "https://www.epfl.ch/research/domains/swiss-plasma-center/tcv-plasma-shapes/" },
+      { title: "Wikipedia: Tokamak à configuration variable", url: "https://en.wikipedia.org/wiki/Tokamak_%C3%A0_configuration_variable" },
+      { title: "Vertical displacements close to ideal-MHD marginal stability (2023)", url: "https://www.sciencedirect.com/science/article/pii/S2772828523000109" }
+    ]
+  }
 };
