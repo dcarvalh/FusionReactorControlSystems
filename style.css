@@ -820,14 +820,6 @@ main {
   stroke-width: 1;
 }
 
-.bd-core {
-  stroke: var(--select);
-}
-
-.bd-layer {
-  stroke-dasharray: 3 3;
-}
-
 .bd-label {
   fill: var(--text);
   font-family: var(--font-sans);
