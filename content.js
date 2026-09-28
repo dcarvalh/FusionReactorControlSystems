@@ -120,7 +120,7 @@ window.CONTENT = {
         {
           heading: "Fast learner.",
           text:
-            "I knew nothing about how nuclear fusion reactors really work. Building this " +
+            "My knowledge of nuclear fusion reactors was quite limited. Building this " +
             "page was my way of learning how these machines work."
         },
         {
