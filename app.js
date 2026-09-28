@@ -128,18 +128,21 @@ function renderWhy() {
 
   var motivation = el("section", "why-block");
   motivation.appendChild(el("h2", "", why.motivation.title));
-  why.motivation.paragraphs.forEach(function (text) {
-    motivation.appendChild(el("p", "why-paragraph", text));
+  var points = el("ul", "why-list");
+  why.motivation.points.forEach(function (text) {
+    points.appendChild(el("li", "", text));
   });
+  motivation.appendChild(points);
   body.appendChild(motivation);
 
   var showcase = el("section", "why-block");
   showcase.appendChild(el("h2", "", why.showcase.title));
-  var list = el("ul", "showcase-list");
+  var list = el("ul", "why-list");
   why.showcase.items.forEach(function (item) {
-    var row = el("li", "showcase-item");
-    row.appendChild(el("h3", "", item.heading));
-    row.appendChild(el("p", "muted", item.text));
+    var row = el("li", "");
+    row.appendChild(el("strong", "", item.heading));
+    row.appendChild(document.createTextNode(" "));
+    row.appendChild(el("span", "muted", item.text));
     list.appendChild(row);
   });
   showcase.appendChild(list);

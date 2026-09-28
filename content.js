@@ -80,50 +80,44 @@ window.CONTENT = {
   why: {
     motivation: {
       title: "Why this page exists",
-      paragraphs: [
-        "Fusionality's founders estimate that about 80% of every fusion company's " +
-          "control system is the same, whatever the machine. I wanted to understand " +
-          "that claim from the inside, so I took one machine, the tokamak, and mapped " +
-          "each of its main parts to the loops that control it: what is measured, " +
-          "what acts, how fast, how it is tested and what the operators watch.",
-        "I built it in the days before our conversation, working from published " +
-          "papers on TCV and its control system. Every number on the page links to " +
-          "its source. [DAVID: one line in your own words on why fusion, and why now]"
+      points: [
+        "Fusionality's founders estimate that about 80% of every fusion " +
+          "company's control system is the same, whatever the machine.",
+        "I wanted to see that from the inside: one machine, each part mapped " +
+          "to the loops that control it.",
+        "Built from published papers on TCV; every number links to its source. " +
+          "[DAVID: why fusion, and why now]"
       ]
     },
     showcase: {
       title: "What it is meant to show",
       items: [
         {
-          heading: "I learn a new domain fast",
+          heading: "I learn fast.",
           text:
-            "[DAVID: confirm: tokamak control was new to me.] The page goes from the " +
-            "machine's parts to its control loops using only published sources, each one cited."
+            "[DAVID: confirm: tokamak control was new to me.] " +
+            "From machine parts to control loops, using only cited, published sources."
         },
         {
-          heading: "I think in control systems",
+          heading: "I think in control systems.",
           text:
-            "Every part is described the same way: sensors, estimation, controller, " +
-            "actuator, loop speed, testing and supervision. This is how I worked on " +
-            "SCADA and hardware-in-the-loop test systems at CERN."
+            "Every part follows the same pattern: sensors, estimation, controller, " +
+            "actuator, loop speed, testing, supervision. The same pattern as my " +
+            "SCADA and hardware-in-the-loop work at CERN."
         },
         {
-          heading: "I take work into operation, not just prototypes",
+          heading: "I take work into operation.",
           text:
-            "The page is designed, tested and deployed like a small product. " +
+            "Designed, tested and deployed like a small product. " +
             "[DAVID: one example of a system you commissioned]"
         },
         {
-          heading: "I explain complex systems simply",
-          text:
-            "The page is written for a smart engineer outside fusion, " +
-            "without giving up accuracy."
+          heading: "I explain complex systems simply.",
+          text: "Written for an engineer outside fusion, without giving up accuracy."
         },
         {
-          heading: "I care about getting it right",
-          text:
-            "Uncertain claims are flagged and checked before publishing. " +
-            "When I was unsure, I said less."
+          heading: "I care about getting it right.",
+          text: "Uncertain claims are flagged and checked. When unsure, I said less."
         }
       ]
     },
