@@ -789,8 +789,15 @@ main {
 
 /* ---------- Shape the plasma ---------- */
 
+/* Sticks to the top of the screen (desktop) while the 3D view and
+   cross-section scroll underneath, so the morph stays in view */
 .shapes-bar {
-  padding-bottom: var(--space-1);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: var(--space-3) 0;
+  background: var(--bg);
+  box-shadow: 0 16px 24px -8px var(--bg);
 }
 
 .shapes-head {
@@ -1108,6 +1115,12 @@ main {
 
   .shape-picker {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* On small screens a stuck bar would cover too much: keep it in the flow */
+  .shapes-bar {
+    position: static;
+    box-shadow: none;
   }
 
   /* The drawing shrinks on phones: enlarge its labels to stay readable */
