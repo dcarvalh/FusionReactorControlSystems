@@ -28,6 +28,10 @@
   --warn: #d9a441;
   --bad: #d9614f;
 
+  /* Placeholders still to be filled in */
+  --todo-bg: #3a3218;
+  --todo-text: #f0c860;
+
   /* Type */
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -195,6 +199,149 @@ main {
   color: var(--text-faint);
 }
 
+/* "[DAVID: …]" placeholders stay visible until filled in */
+.todo {
+  padding: 0 var(--space-1);
+  border-radius: 3px;
+  background: var(--todo-bg);
+  color: var(--todo-text);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.chip {
+  padding: 2px var(--space-2);
+  border: var(--stroke) solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ---------- Home: machine cards ---------- */
+
+.machine-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.machine-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: var(--stroke) solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.machine-card.is-active {
+  grid-row: span 2;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.machine-card.is-active:hover,
+.machine-card.is-active:focus-visible {
+  border-color: var(--select);
+  background: var(--surface-raised);
+  text-decoration: none;
+}
+
+.machine-card.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.machine-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.machine-name {
+  font-size: var(--text-lg);
+}
+
+.machine-glyph {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin: var(--space-2) 0;
+  color: var(--text-muted);
+}
+
+.is-active .machine-glyph {
+  flex: 1;
+  max-width: 420px;
+  align-self: center;
+  margin: var(--space-5) 0;
+}
+
+.glyph-plasma {
+  stroke: var(--plasma-a);
+  filter: drop-shadow(0 0 3px var(--plasma-b));
+}
+
+.machine-summary {
+  color: var(--text-muted);
+}
+
+.machine-examples {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+.machine-cta {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--select);
+}
+
+/* ---------- Why I built this ---------- */
+
+.why-block {
+  max-width: 72ch;
+  margin-bottom: var(--space-7);
+}
+
+.why-block h2 {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-lg);
+}
+
+.why-paragraph {
+  margin-bottom: var(--space-4);
+}
+
+.showcase-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--stroke) solid var(--line-soft);
+}
+
+.showcase-item {
+  padding: var(--space-4) 0;
+  border-bottom: var(--stroke) solid var(--line-soft);
+}
+
+.showcase-item h3 {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-md);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
 /* ---------- Tokamak layout ---------- */
 
 .tokamak-layout {
@@ -262,8 +409,13 @@ main {
     padding: var(--space-6) var(--space-4);
   }
 
-  .tokamak-layout {
+  .tokamak-layout,
+  .machine-grid {
     grid-template-columns: 1fr;
+  }
+
+  .machine-card.is-active {
+    grid-row: auto;
   }
 
   .info-panel {

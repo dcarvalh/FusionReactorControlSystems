@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tokamak Control Map</title>
-  <meta name="description" content="An interactive map of a tokamak's main parts and how each one is controlled.">
+  <title>Fusion Reactor Control Systems</title>
+  <meta name="description" content="An interactive map of a fusion machine's main parts and how each one is controlled.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -15,9 +15,7 @@
     <a class="brand" href="#home" data-text="site.title"></a>
     <nav class="nav" aria-label="Main">
       <a href="#home" data-view-link="home" data-text="nav.home"></a>
-      <a href="#tokamak" data-view-link="tokamak" data-text="nav.tokamak"></a>
-      <a href="#game" data-view-link="game" data-text="nav.game"></a>
-      <a href="#fit" data-view-link="fit" data-text="nav.fit"></a>
+      <a href="#why" data-view-link="why" data-text="nav.why"></a>
     </nav>
   </header>
 
@@ -26,11 +24,12 @@
     <section id="view-home" class="view" aria-labelledby="home-title">
       <h1 id="home-title" data-text="views.home.title"></h1>
       <p class="intro" data-text="views.home.intro"></p>
-      <div class="placeholder" data-text="placeholder"></div>
+      <div class="machine-grid" id="machine-grid"></div>
     </section>
 
-    <!-- B. Tokamak: cross-section + info panel -->
+    <!-- B. Tokamak: cross-section + info panel (reached from the home card) -->
     <section id="view-tokamak" class="view" aria-labelledby="tokamak-title" hidden>
+      <a class="back-link" href="#home" data-text="views.tokamak.back"></a>
       <h1 id="tokamak-title" data-text="views.tokamak.title"></h1>
       <p class="intro" data-text="views.tokamak.intro"></p>
       <div class="tokamak-layout">
@@ -48,18 +47,11 @@
       </div>
     </section>
 
-    <!-- C. Plasma control game -->
-    <section id="view-game" class="view" aria-labelledby="game-title" hidden>
-      <h1 id="game-title" data-text="views.game.title"></h1>
-      <p class="intro" data-text="views.game.intro"></p>
-      <div class="placeholder" data-text="placeholder"></div>
-    </section>
-
-    <!-- D. Where I fit -->
-    <section id="view-fit" class="view" aria-labelledby="fit-title" hidden>
-      <h1 id="fit-title" data-text="views.fit.title"></h1>
-      <p class="intro" data-text="views.fit.intro"></p>
-      <div class="placeholder" data-text="placeholder"></div>
+    <!-- C. Why I built this -->
+    <section id="view-why" class="view" aria-labelledby="why-title" hidden>
+      <h1 id="why-title" data-text="views.why.title"></h1>
+      <p class="intro" data-text="views.why.intro"></p>
+      <div id="why-body"></div>
     </section>
   </main>
 
