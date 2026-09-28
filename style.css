@@ -415,15 +415,15 @@ main {
 }
 
 .status-adjacent {
-  color: var(--warn);
-}
-
-.status-learning {
   color: var(--select);
 }
 
+.status-learning {
+  color: var(--plasma-b);
+}
+
 .status-personal {
-  color: var(--text-muted);
+  color: var(--plasma-a);
 }
 
 .fit-links {
