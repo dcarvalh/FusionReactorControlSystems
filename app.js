@@ -151,7 +151,6 @@ function renderWhy() {
     points.appendChild(el("li", "", text));
   });
   motivation.appendChild(points);
-  body.appendChild(motivation);
 
   var showcase = el("section", "why-block");
   showcase.appendChild(el("h2", "", why.showcase.title));
@@ -167,6 +166,7 @@ function renderWhy() {
   body.appendChild(showcase);
 
   body.appendChild(renderFit(why.fit));
+  body.appendChild(motivation);
 }
 
 // "Where I fit": experience rows (layer, what I've done, status) and contact links. Laid out as a table on wide screens.
