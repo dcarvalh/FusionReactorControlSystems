@@ -166,11 +166,71 @@ function renderWhy() {
   showcase.appendChild(list);
   body.appendChild(showcase);
 
-  var fit = el("section", "why-block");
-  fit.appendChild(el("h2", "", why.fit.title));
-  fit.appendChild(el("p", "why-paragraph muted", why.fit.intro));
-  fit.appendChild(el("div", "placeholder", why.fit.placeholder));
-  body.appendChild(fit);
+  body.appendChild(renderFit(why.fit));
+}
+
+// "Where I fit": experience rows (layer, what I've done, status), a highlighted
+// real-time system, and contact links. Laid out as a table on wide screens.
+function renderFit(fit) {
+  var section = el("section", "why-block why-fit");
+  section.appendChild(el("h2", "", fit.title));
+  section.appendChild(el("p", "why-paragraph muted", fit.intro));
+
+  var table = el("div", "fit-table");
+  table.setAttribute("role", "table");
+  var head = el("div", "fit-row fit-head");
+  head.setAttribute("role", "row");
+  ["layer", "done", "status"].forEach(function (key) {
+    head.appendChild(el("div", "fit-cell", fit.columns[key])).setAttribute("role", "columnheader");
+  });
+  table.appendChild(head);
+
+  fit.rows.forEach(function (row) {
+    var line = el("div", "fit-row");
+    line.setAttribute("role", "row");
+
+    var layer = el("div", "fit-cell fit-layer");
+    layer.appendChild(el("span", "", row.layer));
+    if (row.speed) layer.appendChild(el("span", "fit-speed", row.speed));
+
+    var done = el("ul", "fit-cell fit-done");
+    row.done.forEach(function (item) {
+      done.appendChild(el("li", "", item));
+    });
+
+    var status = el("div", "fit-cell");
+    status.appendChild(el("span", "status-chip status-" + row.status, fit.statusLabels[row.status]));
+
+    [layer, done, status].forEach(function (cell) {
+      cell.setAttribute("role", "cell");
+      line.appendChild(cell);
+    });
+    table.appendChild(line);
+  });
+  section.appendChild(table);
+
+  var highlight = el("div", "fit-highlight");
+  highlight.appendChild(el("h3", "", fit.highlight.title));
+  highlight.appendChild(el("p", "", fit.highlight.text));
+  section.appendChild(highlight);
+
+  var links = el("ul", "fit-links");
+  fit.links.forEach(function (item) {
+    var li = el("li");
+    li.appendChild(el("span", "fit-link-label", item.label));
+    if (item.url) {
+      var link = el("a", "", item.url.replace(/^https?:\/\//, ""));
+      link.href = item.url;
+      link.target = "_blank";
+      link.rel = "noopener";
+      li.appendChild(link);
+    } else {
+      li.appendChild(el("span", "", item.text));
+    }
+    links.appendChild(li);
+  });
+  section.appendChild(links);
+  return section;
 }
 
 // ---------- Tokamak: cross-section, parts list, info panel ----------
