@@ -626,6 +626,11 @@ function onHashChange() {
   if (view === "tokamak" && partId && partId !== selectedPartId) selectPart(partId, false);
 }
 
+// The 3D overview asks to select a part when one is clicked there.
+window.addEventListener("part-request", function (event) {
+  selectPart(event.detail.id, true);
+});
+
 fillText();
 renderMachines();
 renderWhy();

@@ -109,6 +109,7 @@ function start() {
       group.add(new THREE.Mesh(geometry, material));
       if (options.edges !== false) group.add(new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 35), edgeMaterial));
     });
+    group.userData.partId = id;
     scene.add(group);
     if (id) parts[id] = { group: group, material: material, edgeMaterial: edgeMaterial, base: material.color.clone(), baseEdge: edgeMaterial.color.clone() };
     return group;
@@ -160,6 +161,7 @@ function start() {
   // Plasma: a glowing lathe of the current shape, with filled caps at both cut
   // faces and one helical field line wound around it.
   plasmaGroup = new THREE.Group();
+  plasmaGroup.userData.partId = "plasma";
   scene.add(plasmaGroup);
   plasmaMaterial = new THREE.MeshBasicMaterial({ color: colors.plasmaA, transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false });
   capMaterial = new THREE.MeshBasicMaterial({ color: colors.plasmaB, transparent: true, opacity: 0.8, side: THREE.DoubleSide });
@@ -255,6 +257,63 @@ function start() {
     camera.updateProjectionMatrix();
     render();
   }
+
+  // ---------- Picking: the 3D view is clickable like the cross-section ----------
+
+  var raycaster = new THREE.Raycaster();
+  var tooltip = document.createElement("div");
+  tooltip.className = "tooltip";
+  tooltip.hidden = true;
+  frame.appendChild(tooltip);
+
+  // The part under the pointer: the first solid mesh that belongs to a part.
+  function pick(event) {
+    var box = renderer.domElement.getBoundingClientRect();
+    var pointer = new THREE.Vector2(
+      ((event.clientX - box.left) / box.width) * 2 - 1,
+      -((event.clientY - box.top) / box.height) * 2 + 1
+    );
+    raycaster.setFromCamera(pointer, camera);
+    var hits = raycaster.intersectObjects(scene.children, true);
+    for (var h = 0; h < hits.length; h++) {
+      if (!hits[h].object.isMesh) continue;
+      for (var node = hits[h].object; node; node = node.parent) {
+        if (node.userData.partId) return node.userData.partId;
+      }
+    }
+    return null;
+  }
+
+  function partName(id) {
+    return window.CONTENT.parts.filter(function (part) { return part.id === id; })[0].name;
+  }
+
+  renderer.domElement.addEventListener("pointermove", function (event) {
+    var id = pick(event);
+    renderer.domElement.style.cursor = id ? "pointer" : "";
+    if (id) {
+      var box = frame.getBoundingClientRect();
+      tooltip.textContent = partName(id);
+      tooltip.style.left = event.clientX - box.left + "px";
+      tooltip.style.top = event.clientY - box.top + "px";
+    }
+    tooltip.hidden = !id;
+    if (id !== hoveredId) {
+      hoveredId = id;
+      applyHighlight();
+    }
+  });
+
+  renderer.domElement.addEventListener("pointerleave", function () {
+    tooltip.hidden = true;
+    hoveredId = null;
+    applyHighlight();
+  });
+
+  renderer.domElement.addEventListener("click", function (event) {
+    var id = pick(event);
+    if (id) window.dispatchEvent(new CustomEvent("part-request", { detail: { id: id } }));
+  });
 
   window.addEventListener("part-hover", function (event) {
     hoveredId = event.detail.id;
