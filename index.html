@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tokamak Control Map</title>
+  <meta name="description" content="An interactive map of a tokamak's main parts and how each one is controlled.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" data-text="site.title"></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#home" data-view-link="home" data-text="nav.home"></a>
+      <a href="#tokamak" data-view-link="tokamak" data-text="nav.tokamak"></a>
+      <a href="#game" data-view-link="game" data-text="nav.game"></a>
+      <a href="#fit" data-view-link="fit" data-text="nav.fit"></a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- A. Home: select your machine -->
+    <section id="view-home" class="view" aria-labelledby="home-title">
+      <h1 id="home-title" data-text="views.home.title"></h1>
+      <p class="intro" data-text="views.home.intro"></p>
+      <div class="placeholder" data-text="placeholder"></div>
+    </section>
+
+    <!-- B. Tokamak: cross-section + info panel -->
+    <section id="view-tokamak" class="view" aria-labelledby="tokamak-title" hidden>
+      <h1 id="tokamak-title" data-text="views.tokamak.title"></h1>
+      <p class="intro" data-text="views.tokamak.intro"></p>
+      <div class="tokamak-layout">
+        <div class="visuals">
+          <figure class="frame frame-overview">
+            <figcaption class="frame-label" data-text="views.tokamak.overviewLabel"></figcaption>
+          </figure>
+          <figure class="frame frame-cross-section">
+            <figcaption class="frame-label" data-text="views.tokamak.crossSectionLabel"></figcaption>
+          </figure>
+        </div>
+        <aside class="info-panel" aria-live="polite">
+          <p class="muted" data-text="views.tokamak.panelEmpty"></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- C. Plasma control game -->
+    <section id="view-game" class="view" aria-labelledby="game-title" hidden>
+      <h1 id="game-title" data-text="views.game.title"></h1>
+      <p class="intro" data-text="views.game.intro"></p>
+      <div class="placeholder" data-text="placeholder"></div>
+    </section>
+
+    <!-- D. Where I fit -->
+    <section id="view-fit" class="view" aria-labelledby="fit-title" hidden>
+      <h1 id="fit-title" data-text="views.fit.title"></h1>
+      <p class="intro" data-text="views.fit.intro"></p>
+      <div class="placeholder" data-text="placeholder"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      <span data-text="site.footer"></span>
+      Built by <span data-text="site.author"></span> ·
+      <a class="repo-link" data-href="site.repoUrl" data-text="site.repoLabel"></a>
+    </p>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
