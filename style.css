@@ -422,19 +422,6 @@ main {
   color: var(--text-muted);
 }
 
-.fit-highlight {
-  margin-top: var(--space-6);
-  padding: var(--space-5);
-  border: var(--stroke) solid var(--select);
-  border-radius: var(--radius);
-  background: var(--surface);
-}
-
-.fit-highlight h3 {
-  margin-bottom: var(--space-2);
-  font-size: var(--text-md);
-}
-
 .fit-links {
   display: flex;
   flex-wrap: wrap;

@@ -119,7 +119,7 @@ window.CONTENT = {
         {
           heading: "I learn fast.",
           text:
-            "[DAVID: confirm: tokamak control was new to me.] " +
+            "Nuclear fusion reactors were new to me. " +
             "From machine parts to control loops, using only cited, published sources."
         },
         {
@@ -209,8 +209,11 @@ window.CONTENT = {
         {
           layer: "Hard real-time loops (C/C++, RTOS, FPGA)",
           speed: "kHz–MHz",
-          done: ["[DAVID: honest current state + what you're doing about it]"],
-          status: "learning"
+          done: [
+            "CERN: SCADA control logic in CTRL++, WinCC OA's scripting language with C/C++ syntax",
+            "Coordinated the support team for the section's real-time control software and hardware"
+          ],
+          status: "adjacent"
         },
         {
           layer: "Control modelling & tooling",
@@ -222,17 +225,11 @@ window.CONTENT = {
           status: "personal"
         }
       ],
-      highlight: {
-        title: "A real-time system I took into operation",
-        text:
-          "[DAVID: 3–4 lines: what it did, its loop rate or timing, your role, and how " +
-          "you tested and commissioned it]"
-      },
       links: [
         { label: "Website", url: "https://davidcarvalho.work" },
         { label: "GitHub", url: "https://github.com/dcarvalh" },
-        { label: "LinkedIn", text: "[DAVID: LinkedIn URL]" },
-        { label: "Email", text: "[DAVID: show your email here?]" },
+        { label: "LinkedIn", url: "https://www.linkedin.com/in/dcarvalh/" },
+        { label: "Email", url: "mailto:david.belo.carvalho@gmail.com" },
         { label: "CV (PDF)", text: "[DAVID: add the CV PDF to the repo?]" }
       ]
     }
