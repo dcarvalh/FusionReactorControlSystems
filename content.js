@@ -51,10 +51,10 @@ window.CONTENT = {
         testing: "How it's tested",
         monitoring: "What's monitored",
         diagram: "Block diagram",
-        common: "Shared across machine types?",
         sources: "Sources"
       },
-      panelPending: "Content coming in the next milestone."
+      speedTitle: "Fastest loop timescale",
+      sourcesLabel: "Sources"
     },
     why: {
       title: "Why I built this",
@@ -152,7 +152,24 @@ window.CONTENT = {
     }
   },
 
-  // The 5 tokamak parts, following EPFL's TCV infographic. Detailed content comes next.
+  // All sources, referenced by key from parts and shapes. Every number must come from one of these.
+  sources: {
+    tcvWiki: { title: "Wikipedia: Tokamak à configuration variable", url: "https://en.wikipedia.org/wiki/Tokamak_%C3%A0_configuration_variable" },
+    epflShapes: { title: "EPFL Swiss Plasma Center: TCV plasma shapes", url: "https://www.epfl.ch/research/domains/swiss-plasma-center/tcv-plasma-shapes/" },
+    degrave2022: { title: "Degrave et al., Magnetic control of tokamak plasmas through deep reinforcement learning, Nature 602 (2022)", url: "https://www.nature.com/articles/s41586-021-04301-9" },
+    hofmann1997: { title: "Hofmann et al., Feedback stabilization of axisymmetric modes in TCV (1997)", url: "https://www.osti.gov/etdeweb/biblio/587784" },
+    dutch1995: { title: "Dutch et al., Experimental and theoretical growth rates of the vertical instability in TCV (1995)", url: "https://www.osti.gov/etdeweb/biblio/176266" },
+    coda2010: { title: "Coda, Progress and scientific results in the TCV tokamak (2010)", url: "https://www.osti.gov/etdeweb/biblio/21562879" },
+    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)", url: "https://doi.org/10.1016/j.fpp.2023.100017" },
+    le2014: { title: "Le et al., Distributed digital real-time control system for TCV tokamak (2014)", url: "https://doi.org/10.1016/j.fusengdes.2013.11.001" },
+    galperti2024: { title: "Galperti et al., Overview of the TCV digital real-time plasma control system and its applications (2024)", url: "https://doi.org/10.1016/j.fusengdes.2024.114640" },
+    moret2015: { title: "Moret et al., Tokamak equilibrium reconstruction code LIUQE and its real time implementation (2015)", url: "https://doi.org/10.1016/j.fusengdes.2014.09.019" },
+    velasco2023: { title: "Velasco de la Fuente et al., Control upgrade for the TCV coils power supplies (2023)", url: "https://doi.org/10.1016/j.fusengdes.2023.113539" },
+    karpushov2023: { title: "Karpushov et al., Upgrade of the neutral beam heating system on TCV (2023)", url: "https://doi.org/10.1016/j.fusengdes.2022.113384" }
+  },
+
+  // The 5 tokamak parts, following EPFL's TCV infographic.
+  // `verify` lists fields to double-check before sending.
   parts: [
     {
       id: "plasma",
@@ -160,35 +177,203 @@ window.CONTENT = {
       summary:
         "The hot, electrically charged gas being controlled. It follows the magnetic " +
         "field lines, which wind around the doughnut on nested surfaces.",
-      shapeLink: true
+      shapeLink: true,
+      does:
+        "Gas so hot its atoms split into ions and electrons, held away from the wall by " +
+        "magnetic fields. It carries its own current (up to 1.2 MA on TCV). Its position, " +
+        "shape, current and heating are what the control system steers.",
+      tech: [
+        "Microwave heating (ECRH) from gyrotrons, which can also drive current (ECCD)",
+        "TCV: 4.5 MW of ECRH with 7 launchers steerable in real time (2010)",
+        "Neutral beam heating (NBI): the first TCV beam gives up to 1.3 MW",
+        "Gas valves for fuelling"
+      ],
+      control: {
+        text:
+          "Through its actuators: coil voltages set position, shape and current; " +
+          "heating power and launcher angles set where energy goes; gas valves set " +
+          "density. Holding the vertical position is the fastest loop.",
+        speed: "ms"
+      },
+      testing:
+        "Control code is tried on a plasma simulator first. TCV's free-boundary " +
+        "simulator (FGE) models how plasma and coil currents evolve, and produces " +
+        "synthetic sensor signals.",
+      monitoring:
+        "Position and shape, rebuilt from magnetic sensors, and the plasma current. " +
+        "Cameras record each shot for analysis afterwards; on TCV they are not used in real time.",
+      diagram: {
+        nodes: [
+          { label: "Plasma" },
+          { label: "Sensors", caption: "magnetic, optical" },
+          { label: "Control system" },
+          { label: "Actuators", caption: "coils, heating, gas" }
+        ],
+        loopRate: "every shot, in real time"
+      },
+      sources: ["tcvWiki", "coda2010", "degrave2022"],
+      verify: ["control", "diagram"]
     },
     {
       id: "tf",
       name: "Toroidal field coils",
       summary:
         "The large coils wrapped around the doughnut. They make the main magnetic " +
-        "field, which runs the long way round."
+        "field, which runs the long way round.",
+      does:
+        "Make the strong main field that runs the long way round the doughnut: 1.43 T " +
+        "on TCV. Charged particles spiral along the field lines instead of flying into the wall.",
+      tech: [
+        "Large water-cooled copper coils, not superconducting",
+        "A dedicated power supply",
+        "Current held flat during the pulse (about 2 s on TCV)"
+      ],
+      control: {
+        text:
+          "Mostly a fixed current setpoint: ramped up before the plasma, held flat " +
+          "through the pulse, ramped down after.",
+        speed: "s"
+      },
+      testing:
+        "Commissioned without plasma: current raised in steps while temperatures, " +
+        "forces and protection trips are checked.",
+      monitoring: "Coil current and temperature, cooling, and the interlocks that ramp the current down on a fault.",
+      diagram: {
+        nodes: [
+          { label: "Setpoint" },
+          { label: "Power supply" },
+          { label: "TF coils" },
+          { label: "Current sensor" }
+        ],
+        loopRate: "slow: held flat"
+      },
+      sources: ["tcvWiki"],
+      verify: ["tech", "control", "testing", "monitoring"]
     },
     {
       id: "pf",
       name: "Shaping coils (poloidal field)",
       summary:
         "Rings of coils inside and outside the plasma that set its position and shape. " +
-        "TCV has 16, each with its own power supply, plus two fast coils inside the vessel.",
-      shapeLink: true
+        "TCV has 16, each with its own power supply, plus fast coils inside the vessel.",
+      shapeLink: true,
+      does:
+        "Set the plasma's position and shape. TCV's 16 independently powered shaping " +
+        "coils, plus an internal fast coil for vertical control and the ohmic coils, " +
+        "give 19 control coils in all.",
+      tech: [
+        "16 shaping coils, each with its own power supply",
+        "Thyristor power supplies, driven by voltage references",
+        "A fast coil inside the vessel for vertical stability",
+        "Magnetic sensors: 34 flux loops and 38 field probes feed the loop"
+      ],
+      control: {
+        text:
+          "Two loops. Vertical position: tall plasmas are unstable, and TCV holds growth " +
+          "rates up to 4400 per second, so the coils must react within a fraction of a " +
+          "millisecond. Shape: tracked over milliseconds. Rule of thumb: you can't hold " +
+          "an instability much faster than 1 / (power-supply response time).",
+        speed: "µs"
+      },
+      testing:
+        "New controllers run on the FGE simulator first. DeepMind's controller was " +
+        "trained there and then ran on TCV with no further tuning ('zero-shot').",
+      monitoring:
+        "Currents in all 19 control coils, plus limits on current and force. Unbalanced " +
+        "ohmic coil currents cause forces on the machine structure, so they are kept balanced.",
+      diagram: {
+        nodes: [
+          { label: "Magnetic sensors", caption: "34 loops · 38 probes" },
+          { label: "Estimate shape" },
+          { label: "Controller" },
+          { label: "Power supplies", caption: "thyristor" },
+          { label: "Coils", caption: "19 on TCV" },
+          { label: "Plasma" }
+        ],
+        loopRate: "10 kHz (DeepMind controller)"
+      },
+      sources: ["tcvWiki", "degrave2022", "hofmann1997", "dutch1995", "porcelli2023"],
+      verify: ["does"]
     },
     {
       id: "cs",
       name: "Central solenoid",
       summary:
         "The transformer at the centre. Changing its current induces the electric " +
-        "current that flows in the plasma."
+        "current that flows in the plasma.",
+      does:
+        "Drives the plasma current. Ramping the current in the central coils induces a " +
+        "voltage around the doughnut, which pushes up to 1.2 MA through the plasma on TCV.",
+      tech: [
+        "Ohmic coils on the central column, plus coils above and below",
+        "The plasma acts as the transformer's single-turn secondary",
+        "Coil currents measured in real time"
+      ],
+      control: {
+        text:
+          "The plasma current follows a programmed waveform (ramp-up, flat-top, " +
+          "ramp-down), with feedback keeping it on target. A transformer can only ramp " +
+          "so far, which is one reason tokamak pulses are short.",
+        speed: "ms"
+      },
+      testing:
+        "The current waveform is rehearsed in simulation first; FGE models the plasma " +
+        "current with a circuit equation.",
+      monitoring:
+        "Plasma current and ohmic coil currents. On TCV the two ohmic coil currents are " +
+        "kept close, to limit forces on the machine.",
+      diagram: {
+        nodes: [
+          { label: "Current target" },
+          { label: "Controller" },
+          { label: "Power supply" },
+          { label: "Central solenoid" },
+          { label: "Plasma current" }
+        ],
+        loopRate: "measured plasma current"
+      },
+      sources: ["tcvWiki", "degrave2022"],
+      verify: ["tech", "control"]
     },
     {
       id: "control",
       name: "Control system",
       summary:
-        "Measures the plasma with sensors and adjusts the coils, heating and fuelling in real time."
+        "Measures the plasma with sensors and adjusts the coils, heating and fuelling in real time.",
+      does:
+        "Runs each shot: reads the sensors, works out the plasma's state, and commands " +
+        "coils, heating and fuelling. Around that sit shot sequencing, machine " +
+        "protection and the data archive.",
+      tech: [
+        "TCV's digital control system, SCD (Système de Contrôle Distribué)",
+        "Algorithms in MATLAB/Simulink, with run-time code generated automatically; recent versions use the open-source MARTe2 framework",
+        "Real-time equilibrium reconstruction (RT-LIUQE): the plasma's shape from magnetic measurements",
+        "A reinforcement-learning controller from DeepMind and EPFL ran at 10 kHz, commanding all 19 coils"
+      ],
+      control: {
+        text:
+          "In layers by speed: real-time plasma control (µs to ms), shot sequencing and " +
+          "supervision (seconds), and machine protection, which can stop a shot at any time.",
+        speed: "µs"
+      },
+      testing:
+        "Control code runs in simulation before a shot. DeepMind's controller was " +
+        "benchmarked before deployment to check it met its timing every cycle.",
+      monitoring:
+        "The supervisory layer: plant state, alarms and interlocks. Every shot's signals " +
+        "are archived for analysis afterwards.",
+      diagram: {
+        layered: true,
+        middle: ["Diagnostics", "Real-time control", "Actuators"],
+        middleCaption: "µs–ms",
+        above: "Supervisory / sequencing",
+        aboveCaption: "seconds",
+        beside: ["Machine protection", "Data archive"],
+        below: "Simulation",
+        belowCaption: "before each shot"
+      },
+      sources: ["le2014", "galperti2024", "moret2015", "degrave2022"],
+      verify: ["tech", "control", "testing", "monitoring"]
     }
   ],
 
@@ -260,10 +445,6 @@ window.CONTENT = {
         text: "Two separate plasmas held at once in one vessel."
       }
     ],
-    sources: [
-      { title: "EPFL Swiss Plasma Center: TCV plasma shapes", url: "https://www.epfl.ch/research/domains/swiss-plasma-center/tcv-plasma-shapes/" },
-      { title: "Wikipedia: Tokamak à configuration variable", url: "https://en.wikipedia.org/wiki/Tokamak_%C3%A0_configuration_variable" },
-      { title: "Vertical displacements close to ideal-MHD marginal stability (2023)", url: "https://www.sciencedirect.com/science/article/pii/S2772828523000109" }
-    ]
+    sources: ["epflShapes", "tcvWiki", "porcelli2023"]
   }
 };
