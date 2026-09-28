@@ -392,6 +392,10 @@ main {
   color: var(--text-muted);
 }
 
+.fit-single {
+  padding-left: 0;
+}
+
 .fit-done li {
   margin-bottom: var(--space-1);
 }

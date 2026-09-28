@@ -62,7 +62,7 @@ window.CONTENT = {
     why: {
       title: "Why I built this",
       intro:
-        "I wanted to show, rather than tell, how I approach a new control problem."
+        "I wanted to show my motivation, and to learn how nuclear fusion reactors work."
     }
   },
 
@@ -105,12 +105,12 @@ window.CONTENT = {
     motivation: {
       title: "Why this page exists",
       points: [
-        "Fusionality's founders estimate that about 80% of every fusion " +
-          "company's control system is the same, whatever the machine.",
-        "I wanted to see that from the inside: one machine, each part mapped " +
-          "to the loops that control it.",
-        "Built from published papers on TCV; every number links to its source. " +
-          "After five years at CERN, I want to keep working on science, and on fusion in particular."
+        "For myself: I wanted to learn about nuclear fusion reactors. Science and " +
+          "technology excite me, and fusion is one I wanted to understand properly.",
+        "From the inside: I built the 3D cutaway and the cross-section from EPFL's " +
+          "infographic of TCV, to understand all the moving parts of the machine.",
+        "Built on published papers about TCV and its plasma control, work " +
+          "Fusionality's founders were part of."
       ]
     },
     showcase: {
@@ -119,8 +119,20 @@ window.CONTENT = {
         {
           heading: "I learn fast.",
           text:
-            "Nuclear fusion reactors were new to me. " +
-            "From machine parts to control loops, using only cited, published sources."
+            "I knew nothing about how nuclear fusion reactors work. Building this page " +
+            "is how the machine started to make sense."
+        },
+        {
+          heading: "I explain complex systems simply.",
+          text:
+            "Written for an engineer outside fusion: the 3D view, the cross-section and " +
+            "the shape picker do most of the explaining."
+        },
+        {
+          heading: "I like to build things.",
+          text:
+            "A 3D cutaway, an interactive cross-section, plasma shapes that morph live: " +
+            "plain HTML, CSS and JavaScript, tested and deployed like a small product."
         },
         {
           heading: "I think in control systems.",
@@ -130,19 +142,10 @@ window.CONTENT = {
             "SCADA and hardware-in-the-loop work at CERN."
         },
         {
-          heading: "I take work into operation.",
-          text:
-            "Designed, tested and deployed like a small product. At CERN I owned testing " +
-            "of the SCADA applications commissioned during Long Shutdown 2; at SKAN, " +
-            "on-site commissioning through handover and acceptance."
-        },
-        {
-          heading: "I explain complex systems simply.",
-          text: "Written for an engineer outside fusion, without giving up accuracy."
-        },
-        {
           heading: "I care about getting it right.",
-          text: "Uncertain claims are flagged and checked. When unsure, I said less."
+          text:
+            "Every number has a source, and every paper used is referenced. Uncertain " +
+            "claims were flagged and checked; when unsure, I said less."
         }
       ]
     },
@@ -150,9 +153,7 @@ window.CONTENT = {
     // system, tool or deliverable; [DAVID: …] marks what only David can fill in.
     fit: {
       title: "Where I fit",
-      intro:
-        "My work experience, mapped onto a control stack like the one on this page, " +
-        "from supervision down to real-time loops.",
+      intro: "My experience, from supervision down to real-time loops.",
       columns: { layer: "Layer", done: "What I've done", status: "Status" },
       statusLabels: {
         shipped: "Shipped in production",
@@ -164,64 +165,39 @@ window.CONTENT = {
         {
           layer: "Supervisory & SCADA",
           speed: "seconds",
-          done: [
-            "CERN: WinCC OA SCADA for the power converter control systems: control libraries, HMI widgets and operator panels in CTRL++, deployed on Linux servers",
-            "SKAN: SCADA process visualisation and data acquisition for pharmaceutical production, in C# and SQL (zenon)"
-          ],
+          done: ["WinCC OA and CTRL++ at CERN; C# and SQL SCADA at SKAN"],
           status: "shipped"
         },
         {
-          layer: "Distributed control & plant integration",
+          layer: "Distributed control & integration",
           speed: "ms",
-          done: [
-            "CERN: designed, commissioned and maintained the distributed control for high-power converter plants across the accelerator complex: tens of Siemens PLCs, thousands of IO points",
-            "Protocols between field devices and SCADA: IEC-104, MODBUS, PROFINET, PROFIBUS, OPC-UA",
-            "SKAN: integration between the supervisory layer, MES, PLCs and customer IT-OT infrastructure"
-          ],
+          done: ["CERN power converter plants: tens of Siemens PLCs, thousands of IO points; IEC-104, MODBUS, PROFINET, PROFIBUS, OPC-UA"],
           status: "shipped"
         },
         {
-          layer: "Test benches & hardware-in-the-loop",
-          done: [
-            "CERN: led the Python CI/CD framework that validates control software before it reaches a machine: pytest suites generated from specification sheets, HIL and functional tests on industrial control hardware",
-            "GitLab CI runners on Windows and Linux, with automated log analysis and reports",
-            "Recruited and supervised a Master's student on the framework"
-          ],
+          layer: "Testing & hardware-in-the-loop",
+          done: ["Led CERN's Python CI/CD framework for HIL and functional tests (pytest, GitLab CI)"],
           status: "shipped"
         },
         {
-          layer: "Requirements, validation & commissioning",
-          done: [
-            "SKAN: customer requirements into technical specifications; test plans for GMP system qualification, traceable from requirement to evidence",
-            "SKAN: on-site commissioning, handover and acceptance on Windows Server and VMware ESXi",
-            "CERN: owned testing of the new SCADA applications commissioned during Long Shutdown 2, through machine restart"
-          ],
+          layer: "Validation & commissioning",
+          done: ["GMP test plans and on-site acceptance at SKAN; SCADA testing through CERN's Long Shutdown 2"],
           status: "shipped"
         },
         {
           layer: "Operations & support",
-          done: [
-            "CERN: 24/7 standby for the power converter control systems, covering the full control chain",
-            "Coordinated the section's five-person support team for real-time control software and hardware (from 2023)"
-          ],
+          done: ["24/7 standby at CERN; coordinated a five-person support team"],
           status: "shipped"
         },
         {
-          layer: "Hard real-time loops (C/C++, RTOS, FPGA)",
+          layer: "Real-time loops",
           speed: "kHz–MHz",
-          done: [
-            "CERN: SCADA control logic in CTRL++, WinCC OA's scripting language with C/C++ syntax",
-            "Coordinated the support team for the section's real-time control software and hardware"
-          ],
+          done: ["SCADA control logic in CTRL++ (C/C++ syntax); supported real-time control hardware"],
           status: "adjacent"
         },
         {
-          layer: "Control modelling & tooling",
-          done: [
-            "This page: a tokamak's parts and control loops, from published TCV papers",
-            "PID Playground: Python/Jupyter, simulation kept separate from the UI",
-            "MSc thesis: time-series forecasting in MATLAB (ARIMA, SARIMA, supervised learning)"
-          ],
+          layer: "Modelling & tooling",
+          done: ["This page; PID Playground (Python/Jupyter); MSc thesis in MATLAB"],
           status: "personal"
         }
       ],
@@ -229,8 +205,7 @@ window.CONTENT = {
         { label: "Website", url: "https://davidcarvalho.work" },
         { label: "GitHub", url: "https://github.com/dcarvalh" },
         { label: "LinkedIn", url: "https://www.linkedin.com/in/dcarvalh/" },
-        { label: "Email", url: "mailto:david.belo.carvalho@gmail.com" },
-        { label: "CV (PDF)", text: "[DAVID: add the CV PDF to the repo?]" }
+        { label: "Email", url: "mailto:david.belo.carvalho@gmail.com" }
       ]
     }
   },
