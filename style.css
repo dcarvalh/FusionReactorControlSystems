@@ -744,6 +744,115 @@ main {
   pointer-events: none;
 }
 
+/* ---------- "Click a part for more info" hints ---------- */
+
+.click-hint {
+  position: absolute;
+  right: var(--space-3);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: var(--stroke) solid var(--select);
+  border-radius: 999px;
+  background: var(--surface-raised);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--select);
+  pointer-events: none;
+  transition: opacity 300ms ease, visibility 300ms;
+}
+
+.hint-top {
+  top: var(--space-3);
+}
+
+.hint-bottom {
+  bottom: var(--space-3);
+}
+
+.hint-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--select);
+  animation: hint-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(79, 211, 227, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(79, 211, 227, 0);
+  }
+}
+
+.has-selection .click-hint {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* "Click" wording with a mouse, "Tap" wording on touch screens */
+.hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .hint-mouse {
+    display: none;
+  }
+
+  .hint-touch {
+    display: inline;
+  }
+
+  p.hint-touch {
+    display: block;
+  }
+}
+
+/* The empty info panel points at the drawings */
+.panel-empty {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--select);
+}
+
+.panel-empty-arrow::before {
+  content: "←";
+  display: inline-block;
+  font-size: var(--text-xl);
+  animation: hint-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes hint-nudge {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+}
+
+@keyframes hint-nudge-up {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint-dot,
+  .panel-empty-arrow::before {
+    animation: none;
+  }
+}
+
 /* ---------- Parts list (accessible fallback) ---------- */
 
 .parts-list h2 {
@@ -1066,6 +1175,11 @@ main {
   color: var(--text-faint);
 }
 
+.info-panel:has(.panel-empty) {
+  border-color: var(--select);
+  border-style: dashed;
+}
+
 .info-panel {
   position: sticky;
   top: var(--space-5);
@@ -1147,6 +1261,18 @@ main {
   .info-panel {
     position: static;
     max-height: none;
+  }
+
+  .panel-empty-arrow::before {
+    content: "↑";
+    animation-name: hint-nudge-up;
+  }
+
+  /* Below the drawing rather than over its bottom labels */
+  .hint-bottom {
+    position: static;
+    width: fit-content;
+    margin: var(--space-2) 0 0 auto;
   }
 
   .frame-overview {
