@@ -661,6 +661,43 @@ function renderShapePicker() {
   selectShape(window.CONTENT.shapes.defaultId, false);
 }
 
+// ---------- Machine menu in the nav ----------
+
+function initMachineMenu() {
+  var item = document.getElementById("machine-nav");
+  var button = item.querySelector(".nav-button");
+  var menu = document.getElementById("machine-menu");
+
+  function setOpen(open) {
+    menu.hidden = !open;
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  button.addEventListener("click", function () {
+    setOpen(menu.hidden);
+  });
+  // Hover opens it on devices with a mouse.
+  item.addEventListener("pointerenter", function (event) {
+    if (event.pointerType === "mouse") setOpen(true);
+  });
+  item.addEventListener("pointerleave", function (event) {
+    if (event.pointerType === "mouse") setOpen(false);
+  });
+  // Close after choosing, on Escape, or when clicking elsewhere.
+  menu.addEventListener("click", function () {
+    setOpen(false);
+  });
+  item.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      setOpen(false);
+      button.focus();
+    }
+  });
+  document.addEventListener("click", function (event) {
+    if (!item.contains(event.target)) setOpen(false);
+  });
+}
+
 // ---------- Views ----------
 
 // The first part of the hash picks the view, e.g. "#tokamak" or "#tokamak/pf".
@@ -695,6 +732,7 @@ window.addEventListener("part-request", function (event) {
 });
 
 fillText();
+initMachineMenu();
 renderMachines();
 renderWhy();
 initCrossSection();

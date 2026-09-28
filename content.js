@@ -14,6 +14,7 @@ window.CONTENT = {
 
   nav: {
     home: "Select your machine",
+    tokamak: "Tokamak",
     why: "Why I built this"
   },
 
@@ -422,6 +423,7 @@ window.CONTENT = {
   // "Shape the plasma": EPFL's TCV plasma shapes, simplified.
   shapes: {
     title: "Shape the plasma",
+    aboutTitle: "About the shapes",
     intro:
       "Plasma follows the magnetic field lines, so changing the field changes its shape. " +
       "TCV's tall vessel and 16 independently powered shaping coils let it make many " +
@@ -430,7 +432,7 @@ window.CONTENT = {
       "Shapes simplified from EPFL's published TCV equilibria; illustrative, not to scale. " +
       "The thin lines inside the plasma are magnetic surfaces: the field lines wind around " +
       "the doughnut on them.",
-    cta: "Try it: shape the plasma ↓",
+    cta: "Try it: shape the plasma ↑",
     defaultId: "diverted",
     items: [
       {
