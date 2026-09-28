@@ -169,8 +169,7 @@ function renderWhy() {
   body.appendChild(renderFit(why.fit));
 }
 
-// "Where I fit": experience rows (layer, what I've done, status), a highlighted
-// real-time system, and contact links. Laid out as a table on wide screens.
+// "Where I fit": experience rows (layer, what I've done, status) and contact links. Laid out as a table on wide screens.
 function renderFit(fit) {
   var section = el("section", "why-block why-fit");
   section.appendChild(el("h2", "", fit.title));
@@ -209,20 +208,17 @@ function renderFit(fit) {
   });
   section.appendChild(table);
 
-  var highlight = el("div", "fit-highlight");
-  highlight.appendChild(el("h3", "", fit.highlight.title));
-  highlight.appendChild(el("p", "", fit.highlight.text));
-  section.appendChild(highlight);
-
   var links = el("ul", "fit-links");
   fit.links.forEach(function (item) {
     var li = el("li");
     li.appendChild(el("span", "fit-link-label", item.label));
     if (item.url) {
-      var link = el("a", "", item.url.replace(/^https?:\/\//, ""));
+      var link = el("a", "", item.url.replace(/^(https?:\/\/(www\.)?|mailto:)/, "").replace(/\/$/, ""));
       link.href = item.url;
-      link.target = "_blank";
-      link.rel = "noopener";
+      if (item.url.indexOf("mailto:") !== 0) {
+        link.target = "_blank";
+        link.rel = "noopener";
+      }
       li.appendChild(link);
     } else {
       li.appendChild(el("span", "", item.text));
