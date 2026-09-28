@@ -167,9 +167,32 @@ function renderWhy() {
 
   body.appendChild(renderFit(why.fit));
   body.appendChild(motivation);
+  body.appendChild(renderLinks(why.fit.links));
 }
 
-// "Where I fit": experience rows (layer, what I've done, status) and contact links. Laid out as a table on wide screens.
+// Contact links (website, GitHub, LinkedIn, email), shown at the bottom of the tab.
+function renderLinks(items) {
+  var links = el("ul", "fit-links");
+  items.forEach(function (item) {
+    var li = el("li");
+    li.appendChild(el("span", "fit-link-label", item.label));
+    if (item.url) {
+      var link = el("a", "", item.url.replace(/^(https?:\/\/(www\.)?|mailto:)/, "").replace(/\/$/, ""));
+      link.href = item.url;
+      if (item.url.indexOf("mailto:") !== 0) {
+        link.target = "_blank";
+        link.rel = "noopener";
+      }
+      li.appendChild(link);
+    } else {
+      li.appendChild(el("span", "", item.text));
+    }
+    links.appendChild(li);
+  });
+  return links;
+}
+
+// "Where I fit": experience rows (layer, what I've done, status). Laid out as a table on wide screens.
 function renderFit(fit) {
   var section = el("section", "why-block why-fit");
   section.appendChild(el("h2", "", fit.title));
@@ -214,24 +237,6 @@ function renderFit(fit) {
   });
   section.appendChild(table);
 
-  var links = el("ul", "fit-links");
-  fit.links.forEach(function (item) {
-    var li = el("li");
-    li.appendChild(el("span", "fit-link-label", item.label));
-    if (item.url) {
-      var link = el("a", "", item.url.replace(/^(https?:\/\/(www\.)?|mailto:)/, "").replace(/\/$/, ""));
-      link.href = item.url;
-      if (item.url.indexOf("mailto:") !== 0) {
-        link.target = "_blank";
-        link.rel = "noopener";
-      }
-      li.appendChild(link);
-    } else {
-      li.appendChild(el("span", "", item.text));
-    }
-    links.appendChild(li);
-  });
-  section.appendChild(links);
   return section;
 }
 
