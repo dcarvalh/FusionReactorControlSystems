@@ -109,8 +109,8 @@ window.CONTENT = {
           "technology excite me, and fusion is one I wanted to understand properly.",
         "From the inside: I built the 3D cutaway and the cross-section from EPFL's " +
           "infographic of TCV, to understand all the moving parts of the machine.",
-        "Built on published papers about TCV and its plasma control, work " +
-          "Fusionality's founders were part of."
+        "To show my motivation: I built this page on published papers about TCV and " +
+          "its plasma control, work Fusionality's founders were part of."
       ]
     },
     showcase: {
@@ -194,11 +194,6 @@ window.CONTENT = {
           speed: "kHz–MHz",
           done: ["SCADA control logic in CTRL++ (C/C++ syntax); supported real-time control hardware"],
           status: "adjacent"
-        },
-        {
-          layer: "Modelling & tooling",
-          done: ["This page; PID Playground (Python/Jupyter); MSc thesis in MATLAB"],
-          status: "personal"
         }
       ],
       links: [
