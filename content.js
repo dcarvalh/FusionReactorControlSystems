@@ -62,7 +62,7 @@ window.CONTENT = {
     why: {
       title: "Why I built this",
       intro:
-        "I wanted to show my motivation, and to learn how nuclear fusion reactors work."
+        "I wanted to learn how nuclear fusion reactors really work."
     }
   },
 
@@ -116,33 +116,33 @@ window.CONTENT = {
       title: "What it is meant to show",
       items: [
         {
-          heading: "I learn fast.",
+          heading: "Fast learner.",
           text:
             "I knew nothing about how nuclear fusion reactors work. Building this page " +
             "is how the machine started to make sense."
         },
         {
-          heading: "I think in control systems.",
+          heading: "Control systems approach.",
           text:
             "Every part follows the same pattern: sensors, estimation, controller, " +
             "actuator, loop speed, testing, supervision. The same pattern as my " +
             "SCADA and hardware-in-the-loop work at CERN."
         },
         {
-          heading: "I explain complex systems simply.",
+          heading: "Complex systems, explained simply.",
           text:
             "Written for an engineer outside fusion: the 3D view, the cross-section and " +
             "the shape picker do most of the explaining."
         },
         {
-          heading: "I like to build things.",
+          heading: "Hands-on builder.",
           text:
             "A 3D cutaway, an interactive cross-section, plasma shapes that morph live: " +
             "plain HTML, CSS and JavaScript (three.js for the 3D), tested and deployed " +
             "like a small product."
         },
         {
-          heading: "I care about getting it right.",
+          heading: "Accuracy first.",
           text:
             "Every number has a source, and every paper used is referenced. What I could " +
             "not check against a source, I left out or kept general: when unsure, I said less."
