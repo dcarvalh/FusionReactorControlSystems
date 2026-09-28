@@ -167,18 +167,6 @@ function findPart(id) {
   })[0];
 }
 
-// An elongated D shape: elongation kappa, triangularity delta (pointing inboard).
-function plasmaPath(cx, cy, a, kappa, delta) {
-  var points = [];
-  for (var i = 0; i < 72; i++) {
-    var t = (i / 72) * 2 * Math.PI;
-    var x = cx + a * Math.cos(t + delta * Math.sin(t));
-    var y = cy - kappa * a * Math.sin(t);
-    points.push(x.toFixed(1) + " " + y.toFixed(1));
-  }
-  return "M" + points.join(" L") + " Z";
-}
-
 function showTooltip(text, x, y) {
   var tip = document.getElementById("xs-tooltip");
   tip.textContent = text;
@@ -192,10 +180,6 @@ function hideTooltip() {
 }
 
 function initCrossSection() {
-  var d = plasmaPath(242, 360, 62, 2.05, 0.45);
-  document.getElementById("plasma-shape").setAttribute("d", d);
-  document.getElementById("plasma-glow-shape").setAttribute("d", d);
-
   var frame = document.getElementById("cross-section");
 
   document.querySelectorAll("#cross-section .part").forEach(function (group) {
@@ -265,6 +249,16 @@ function renderPanel(part) {
     }
     panel.appendChild(section);
   });
+
+  if (part.shapeLink) {
+    var link = el("button", "panel-cta", window.CONTENT.shapes.cta);
+    link.type = "button";
+    link.addEventListener("click", function () {
+      document.getElementById("shapes").scrollIntoView({ behavior: "smooth", block: "start" });
+      document.querySelector(".shape-button.is-selected").focus({ preventScroll: true });
+    });
+    panel.insertBefore(link, panel.children[2]);
+  }
 }
 
 // Highlight a part everywhere and show it in the panel. The hash records the
@@ -288,6 +282,129 @@ function selectPart(id, fromUser) {
       document.getElementById("info-panel").scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+}
+
+// ---------- Shape the plasma ----------
+
+var SHAPES = buildShapes();
+var FLUX_SCALES = [0.74, 0.48, 0.22];
+var currentBoundaries = null;
+var shapeAnimation = null;
+
+// Draw the plasma from its two boundaries (identical unless there are two droplets).
+function drawPlasma(boundaries) {
+  var a = pathFromPoints(boundaries[0]);
+  var b = pathFromPoints(boundaries[1]);
+  document.getElementById("plasma-glow-a").setAttribute("d", a);
+  document.getElementById("plasma-glow-b").setAttribute("d", b);
+  document.getElementById("plasma-edge").setAttribute("d", a + " " + b);
+  var flux = fluxSurfaces(boundaries[0], FLUX_SCALES).concat(fluxSurfaces(boundaries[1], FLUX_SCALES));
+  document.getElementById("plasma-flux").setAttribute("d", flux.map(pathFromPoints).join(" "));
+  currentBoundaries = boundaries;
+}
+
+// Divertor legs and X-point markers for a shape.
+function drawExtras(shape) {
+  document.getElementById("plasma-legs").setAttribute("d", shape.legs);
+  document.getElementById("plasma-xpoints").setAttribute("d", shape.xPoints.map(function (p) {
+    return "M" + (p[0] - 5) + " " + (p[1] - 5) + " l10 10 m0 -10 l-10 10";
+  }).join(" "));
+}
+
+function isDouble(shape) {
+  return shape.boundaries[0] !== shape.boundaries[1];
+}
+
+function easeInOut(t) {
+  return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
+function selectShape(id, animate) {
+  var shape = SHAPES[id];
+  var item = window.CONTENT.shapes.items.filter(function (it) { return it.id === id; })[0];
+  if (!shape || !item) return;
+
+  // Picker state and description
+  document.querySelectorAll(".shape-button").forEach(function (button) {
+    var isSelected = button.dataset.shape === id;
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-pressed", isSelected ? "true" : "false");
+  });
+  var detail = document.getElementById("shape-detail");
+  detail.textContent = "";
+  detail.appendChild(el("h3", "", item.name));
+  detail.appendChild(el("p", "muted", item.text));
+
+  var glowB = document.getElementById("plasma-glow-b");
+  var extras = document.getElementById("plasma-extras");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!animate || reduceMotion || !currentBoundaries) {
+    drawPlasma(shape.boundaries);
+    drawExtras(shape);
+    glowB.style.opacity = isDouble(shape) ? 1 : 0;
+    return;
+  }
+
+  // The shaping coils pulse: the control system changes their currents.
+  var coils = document.getElementById("pf-coils");
+  coils.classList.remove("is-pulsing");
+  void coils.getBoundingClientRect();
+  coils.classList.add("is-pulsing");
+
+  // Morph the boundaries; legs and X-points fade out and back in.
+  if (shapeAnimation) cancelAnimationFrame(shapeAnimation);
+  var from = currentBoundaries;
+  var start = performance.now();
+  var duration = 700;
+  extras.classList.add("is-hidden");
+  if (isDouble(shape)) glowB.style.opacity = 1;
+
+  function step(now) {
+    var t = Math.min(1, (now - start) / duration);
+    var f = easeInOut(t);
+    drawPlasma([lerpPoints(from[0], shape.boundaries[0], f), lerpPoints(from[1], shape.boundaries[1], f)]);
+    if (t < 1) {
+      shapeAnimation = requestAnimationFrame(step);
+    } else {
+      shapeAnimation = null;
+      drawPlasma(shape.boundaries);
+      drawExtras(shape);
+      if (!isDouble(shape)) glowB.style.opacity = 0;
+      extras.classList.remove("is-hidden");
+    }
+  }
+  shapeAnimation = requestAnimationFrame(step);
+}
+
+// Small vessel thumbnail showing one shape, like EPFL's figure of TCV shapes.
+function shapeThumbnail(shape) {
+  var svg = svgEl("svg", { viewBox: "150 110 180 500", class: "shape-thumb", "aria-hidden": "true" });
+  svg.appendChild(svgEl("path", { d: VESSEL_INNER_PATH, class: "thumb-vessel" }));
+  var bodies = isDouble(shape) ? shape.boundaries : [shape.boundaries[0]];
+  bodies.forEach(function (points) {
+    svg.appendChild(svgEl("path", { d: pathFromPoints(points), class: "thumb-plasma" }));
+  });
+  if (shape.legs) svg.appendChild(svgEl("path", { d: shape.legs, class: "thumb-leg" }));
+  return svg;
+}
+
+function renderShapePicker() {
+  var picker = document.getElementById("shape-picker");
+  window.CONTENT.shapes.items.forEach(function (item) {
+    var button = el("button", "shape-button");
+    button.type = "button";
+    button.dataset.shape = item.id;
+    button.setAttribute("aria-pressed", "false");
+    button.appendChild(shapeThumbnail(SHAPES[item.id]));
+    button.appendChild(el("span", "shape-name", item.short || item.name));
+    button.setAttribute("aria-label", item.name);
+    button.addEventListener("click", function () {
+      selectShape(item.id, true);
+    });
+    picker.appendChild(button);
+  });
+  selectShape(window.CONTENT.shapes.defaultId, false);
 }
 
 // ---------- Views ----------
@@ -323,5 +440,6 @@ renderMachines();
 renderWhy();
 initCrossSection();
 renderPartsList();
+renderShapePicker();
 onHashChange();
 window.addEventListener("hashchange", onHashChange);
