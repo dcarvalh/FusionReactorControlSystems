@@ -44,7 +44,10 @@ window.CONTENT = {
         cs: "Central solenoid"
       },
       listTitle: "All parts",
-      panelEmpty: "Select a part in the 3D view or the cross-section to see how it works.",
+      panelEmpty: "Click any part of the machine, in the 3D view or the cross-section, for more info.",
+      panelEmptyTouch: "Tap any part of the machine, in the 3D view or the cross-section, for more info.",
+      clickHint: "Click a part for more info",
+      tapHint: "Tap a part for more info",
       panelLabels: {
         does: "What it does",
         tech: "Key technologies",

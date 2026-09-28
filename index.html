@@ -62,6 +62,7 @@
           </section>
           <figure class="frame frame-overview" id="overview">
             <figcaption class="frame-label" data-text="views.tokamak.overviewLabel"></figcaption>
+            <div class="click-hint hint-top" aria-hidden="true"><span class="hint-dot"></span><span class="hint-mouse" data-text="views.tokamak.clickHint"></span><span class="hint-touch" data-text="views.tokamak.tapHint"></span></div>
           </figure>
           <figure class="frame frame-cross-section" id="cross-section">
             <figcaption class="frame-label" data-text="views.tokamak.crossSectionLabel"></figcaption>
@@ -150,6 +151,7 @@
 
             </svg>
             <div class="tooltip" id="xs-tooltip" role="tooltip" hidden></div>
+            <div class="click-hint hint-bottom" aria-hidden="true"><span class="hint-dot"></span><span class="hint-mouse" data-text="views.tokamak.clickHint"></span><span class="hint-touch" data-text="views.tokamak.tapHint"></span></div>
           </figure>
           <nav class="parts-list" aria-labelledby="parts-list-title">
             <h2 id="parts-list-title" data-text="views.tokamak.listTitle"></h2>
@@ -162,7 +164,11 @@
           </section>
         </div>
         <aside class="info-panel" id="info-panel" aria-live="polite">
-          <p class="muted" data-text="views.tokamak.panelEmpty"></p>
+          <div class="panel-empty">
+            <span class="panel-empty-arrow" aria-hidden="true"></span>
+            <p class="hint-mouse" data-text="views.tokamak.panelEmpty"></p>
+            <p class="hint-touch" data-text="views.tokamak.panelEmptyTouch"></p>
+          </div>
         </aside>
       </div>
     </section>

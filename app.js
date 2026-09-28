@@ -517,6 +517,8 @@ function selectPart(id, fromUser) {
   var part = findPart(id);
   if (!part) return;
   selectedPartId = id;
+  // The "click a part" hints are no longer needed once something is selected.
+  document.body.classList.add("has-selection");
 
   document.querySelectorAll("[data-part]").forEach(function (node) {
     var isSelected = node.dataset.part === id;
