@@ -214,6 +214,7 @@ window.CONTENT = {
   sources: {
     tcvWiki: { title: "Wikipedia: Tokamak à configuration variable", url: "https://en.wikipedia.org/wiki/Tokamak_%C3%A0_configuration_variable" },
     epflShapes: { title: "EPFL Swiss Plasma Center: TCV plasma shapes", url: "https://www.epfl.ch/research/domains/swiss-plasma-center/tcv-plasma-shapes/" },
+    ravensbergen2021: { title: "Ravensbergen et al., Real-time feedback control of the impurity emission front in tokamak divertor plasmas, Nature Communications (2021)", url: "https://www.nature.com/articles/s41467-021-21268-3" },
     degrave2022: { title: "Degrave et al., Magnetic control of tokamak plasmas through deep reinforcement learning, Nature 602 (2022)", url: "https://www.nature.com/articles/s41586-021-04301-9" },
     hofmann1997: { title: "Hofmann et al., Feedback stabilization of axisymmetric modes in TCV (1997)", url: "https://www.osti.gov/etdeweb/biblio/587784" },
     dutch1995: { title: "Dutch et al., Experimental and theoretical growth rates of the vertical instability in TCV (1995)", url: "https://www.osti.gov/etdeweb/biblio/176266" },
@@ -262,7 +263,9 @@ window.CONTENT = {
         "synthetic sensor signals.",
       monitoring:
         "Position and shape, rebuilt from magnetic sensors, and the plasma current. " +
-        "Cameras record each shot for analysis afterwards; on TCV they are not used in real time.",
+        "Cameras can close loops too: on TCV, the MANTIS multi-spectral cameras track the " +
+        "divertor's impurity emission front in real time (up to 800 Hz), and a gas valve " +
+        "moves it.",
       diagram: {
         nodes: [
           { label: "Plasma" },
@@ -272,7 +275,7 @@ window.CONTENT = {
         ],
         loopRate: "every shot, in real time"
       },
-      sources: ["tcvWiki", "coda2010", "degrave2022"],
+      sources: ["tcvWiki", "coda2010", "degrave2022", "ravensbergen2021"],
       verify: ["control", "diagram"]
     },
     {
