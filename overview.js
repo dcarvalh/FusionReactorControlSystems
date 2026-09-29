@@ -3,7 +3,7 @@
 // SVG, rotated about the machine's axis, so both views always match. The cyan
 // plane marks where the cross-section is taken. Illustrative, not to scale.
 //
-// Loaded as an ES module (three.js via the import map in index.html). It listens
+// Loaded as an ES module (three.js, served from vendor/, via the import map in index.html). It listens
 // for events from app.js: "part-hover", "part-select" and "plasma-shape".
 
 import * as THREE from "three";
@@ -78,6 +78,7 @@ function start() {
   };
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  if (!renderer.getContext()) throw new Error("WebGL unavailable");
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.domElement.setAttribute("aria-hidden", "true");
   frame.appendChild(renderer.domElement);
@@ -332,6 +333,21 @@ function start() {
   if (window.currentBoundaries) setPlasma(window.currentBoundaries);
   selectedId = window.selectedPartId || null;
   new ResizeObserver(resize).observe(frame);
+
+  // Browsers can drop the 3D context (sleep, GPU reset, many tabs). Rendering is
+  // on demand, so repaint when it comes back, and whenever the tab is shown again.
+  renderer.domElement.addEventListener("webglcontextlost", function (event) {
+    event.preventDefault();
+  });
+  renderer.domElement.addEventListener("webglcontextrestored", function () {
+    resize();
+    applyHighlight();
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) render();
+  });
+  window.addEventListener("pageshow", render);
+
   frame.classList.add("is-ready");
   applyHighlight();
 }

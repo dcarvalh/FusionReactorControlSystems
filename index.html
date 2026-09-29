@@ -61,6 +61,7 @@
           </section>
           <figure class="frame frame-overview" id="overview">
             <figcaption class="frame-label" data-text="views.tokamak.overviewLabel"></figcaption>
+            <p class="overview-fallback" data-text="views.tokamak.overviewUnavailable"></p>
             <div class="click-hint hint-top" aria-hidden="true"><span class="hint-dot"></span><span class="hint-mouse" data-text="views.tokamak.clickHint"></span><span class="hint-touch" data-text="views.tokamak.tapHint"></span></div>
           </figure>
           <figure class="frame frame-cross-section" id="cross-section">
@@ -192,7 +193,7 @@
   <script src="shapes.js"></script>
   <script src="app.js"></script>
   <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    { "imports": { "three": "./vendor/three.module.min.js" } }
   </script>
   <script type="module" src="overview.js"></script>
 </body>

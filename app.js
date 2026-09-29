@@ -764,4 +764,11 @@ renderPartsList();
 renderShapePicker();
 onHashChange();
 initPanelAlignment();
+
+// If the 3D module never starts (script blocked, no WebGL), say so instead of
+// leaving an empty frame.
+setTimeout(function () {
+  var overview = document.getElementById("overview");
+  if (!overview.classList.contains("is-ready")) overview.classList.add("is-unavailable");
+}, 8000);
 window.addEventListener("hashchange", onHashChange);
