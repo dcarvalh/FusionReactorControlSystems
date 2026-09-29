@@ -544,6 +544,27 @@ main {
   height: 100%;
 }
 
+.overview-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  max-width: 36ch;
+  padding: var(--space-4);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.frame-overview.is-unavailable:not(.is-ready) .overview-fallback {
+  display: block;
+}
+
+.frame-overview.is-unavailable:not(.is-ready) .click-hint {
+  display: none;
+}
+
 .frame-overview .frame-label {
   z-index: 1;
   top: auto;

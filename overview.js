@@ -3,7 +3,7 @@
 // SVG, rotated about the machine's axis, so both views always match. The cyan
 // plane marks where the cross-section is taken. Illustrative, not to scale.
 //
-// Loaded as an ES module (three.js via the import map in index.html). It listens
+// Loaded as an ES module (three.js, served from vendor/, via the import map in index.html). It listens
 // for events from app.js: "part-hover", "part-select" and "plasma-shape".
 
 import * as THREE from "three";
@@ -78,6 +78,7 @@ function start() {
   };
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  if (!renderer.getContext()) throw new Error("WebGL unavailable");
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.domElement.setAttribute("aria-hidden", "true");
   frame.appendChild(renderer.domElement);
@@ -310,8 +311,15 @@ function start() {
     applyHighlight();
   });
 
+  // Pick on pointerdown: click events round the position to whole pixels, which
+  // can miss the thin toroidal-field-coil tubes that hover just highlighted.
+  var pressedId = null;
+  renderer.domElement.addEventListener("pointerdown", function (event) {
+    pressedId = pick(event);
+  });
   renderer.domElement.addEventListener("click", function (event) {
-    var id = pick(event);
+    var id = pressedId || pick(event);
+    pressedId = null;
     if (id) window.dispatchEvent(new CustomEvent("part-request", { detail: { id: id } }));
   });
 
@@ -332,6 +340,23 @@ function start() {
   if (window.currentBoundaries) setPlasma(window.currentBoundaries);
   selectedId = window.selectedPartId || null;
   new ResizeObserver(resize).observe(frame);
+
+  // Browsers can drop the 3D context (sleep, GPU reset, many tabs). Rendering is
+  // on demand, so repaint when it comes back, and whenever the tab is shown again.
+  renderer.domElement.addEventListener("webglcontextlost", function (event) {
+    event.preventDefault();
+  });
+  renderer.domElement.addEventListener("webglcontextrestored", function () {
+    resize();
+    applyHighlight();
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) render();
+  });
+  window.addEventListener("pageshow", render);
+
+  // Ready (and clear the "could not start" message if a slow load triggered it).
+  frame.classList.remove("is-unavailable");
   frame.classList.add("is-ready");
   applyHighlight();
 }

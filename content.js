@@ -33,6 +33,8 @@ window.CONTENT = {
         "The whole machine in 3D, and a poloidal cross-section: a slice through the doughnut. " +
         "Select a part in either view to see what it does and how it is controlled.",
       overviewLabel: "3D cutaway · cyan plane = the slice below",
+      overviewUnavailable:
+        "The 3D view could not start in this browser. The cross-section below shows the same machine.",
       crossSectionLabel: "Cross-section · TCV-inspired · illustrative, not to scale",
       axisLabel: "axis of the doughnut",
       vesselLabel: "vacuum vessel",
