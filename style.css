@@ -557,11 +557,11 @@ main {
   color: var(--text-muted);
 }
 
-.frame-overview.is-unavailable .overview-fallback {
+.frame-overview.is-unavailable:not(.is-ready) .overview-fallback {
   display: block;
 }
 
-.frame-overview.is-unavailable .click-hint {
+.frame-overview.is-unavailable:not(.is-ready) .click-hint {
   display: none;
 }
 

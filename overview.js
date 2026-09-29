@@ -311,8 +311,15 @@ function start() {
     applyHighlight();
   });
 
+  // Pick on pointerdown: click events round the position to whole pixels, which
+  // can miss the thin toroidal-field-coil tubes that hover just highlighted.
+  var pressedId = null;
+  renderer.domElement.addEventListener("pointerdown", function (event) {
+    pressedId = pick(event);
+  });
   renderer.domElement.addEventListener("click", function (event) {
-    var id = pick(event);
+    var id = pressedId || pick(event);
+    pressedId = null;
     if (id) window.dispatchEvent(new CustomEvent("part-request", { detail: { id: id } }));
   });
 
@@ -348,6 +355,8 @@ function start() {
   });
   window.addEventListener("pageshow", render);
 
+  // Ready (and clear the "could not start" message if a slow load triggered it).
+  frame.classList.remove("is-unavailable");
   frame.classList.add("is-ready");
   applyHighlight();
 }
