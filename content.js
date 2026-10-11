@@ -79,8 +79,7 @@ window.CONTENT = {
       summary:
         "A doughnut of plasma; a current flowing in the plasma helps hold it.",
       examples: "Example of a company building this type: Commonwealth Fusion Systems.",
-      cta: "Explore the tokamak →",
-      verify: ["summary"]
+      cta: "Explore the tokamak →"
     },
     {
       id: "stellarator",
@@ -88,17 +87,15 @@ window.CONTENT = {
       active: false,
       summary:
         "Twisted 3D coils create the whole magnetic cage, so no plasma current is needed.",
-      examples: "Examples of companies building this type: Proxima Fusion, Type One Energy.",
-      verify: ["summary"]
+      examples: "Examples of companies building this type: Proxima Fusion, Type One Energy."
     },
     {
       id: "mirror",
       name: "Magnetic mirror",
       active: false,
       summary:
-        "A straight magnetic tube, plugged at both ends by strong magnets.",
-      examples: "Example of a company building this type: Realta Fusion.",
-      verify: ["summary"]
+        "A straight magnetic tube; strong magnets at both ends turn particles back, though some leak out.",
+      examples: "Example of a company building this type: Realta Fusion."
     }
   ],
   comingSoon: "Coming soon",
@@ -219,7 +216,10 @@ window.CONTENT = {
     hofmann1997: { title: "Hofmann et al., Feedback stabilization of axisymmetric modes in TCV (1997)", url: "https://www.osti.gov/etdeweb/biblio/587784" },
     dutch1995: { title: "Dutch et al., Experimental and theoretical growth rates of the vertical instability in TCV (1995)", url: "https://www.osti.gov/etdeweb/biblio/176266" },
     coda2010: { title: "Coda, Progress and scientific results in the TCV tokamak (2010)", url: "https://www.osti.gov/etdeweb/biblio/21562879" },
-    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)" }
+    porcelli2023: { title: "Porcelli et al., Vertical displacements close to ideal-MHD marginal stability (2023)" },
+    meijere2013: { title: "de Meijere, An experimental study of plasma fluctuations in the TCV and TEXTOR tokamaks, EPFL thesis (2013)", url: "https://infoscience.epfl.ch/items/20e15c37-24bc-4943-8a09-9d888c987cbf" },
+    theiler2026: { title: "Theiler et al., Progress and innovations in the TCV tokamak research programme, Nuclear Fusion 66 (2026)", url: "https://www.osti.gov/biblio/3374926" },
+    epflCourse2024: { title: "EPFL Swiss Plasma Center, Nuclear Fusion and Plasma Physics, Problem Set 7 (2024)", url: "https://moodle.epfl.ch/pluginfile.php/3146866/mod_resource/content/3/Problemset_7_2024.pdf" }
   },
 
   // The 4 tokamak parts, following EPFL's TCV infographic.
@@ -242,7 +242,7 @@ window.CONTENT = {
       },
       does:
         "Gas so hot its atoms split into ions and electrons, held away from the wall by " +
-        "magnetic fields. It carries its own current (up to 1.2 MA on TCV). Its position, " +
+        "magnetic fields. It carries its own current (up to 1 MA on TCV). Its position, " +
         "shape, current and heating are what the control system steers.",
       tech: [
         "Microwave heating (ECRH) from gyrotrons, which can also drive current (ECCD)",
@@ -254,7 +254,8 @@ window.CONTENT = {
         text:
           "Through its actuators: coil voltages set position, shape and current; " +
           "heating power and launcher angles set where energy goes; gas valves set " +
-          "density. Holding the vertical position is the fastest loop.",
+          "density. The vertical position needs the fastest reaction: in a tall plasma " +
+          "an up or down drift grows within a fraction of a millisecond.",
         speed: "ms"
       },
       testing:
@@ -275,8 +276,7 @@ window.CONTENT = {
         ],
         loopRate: "every shot, in real time"
       },
-      sources: ["tcvWiki", "coda2010", "degrave2022", "ravensbergen2021"],
-      verify: ["control", "diagram"]
+      sources: ["tcvWiki", "meijere2013", "theiler2026", "coda2010", "degrave2022", "ravensbergen2021", "dutch1995"]
     },
     {
       id: "tf",
@@ -288,16 +288,15 @@ window.CONTENT = {
         does:
           "Big coils around the doughnut that make the main magnetic field. The plasma's " +
           "particles follow that field instead of hitting the wall.",
-        tech: ["Large copper coils", "One steady power supply"],
-        control: "Set to a fixed current before the plasma starts, and held there.",
-        verify: ["tech"]
+        tech: ["16 water-cooled copper coils", "Held at a steady current during the shot"],
+        control: "Set to a fixed current before the plasma starts, and held there."
       },
       does:
-        "Make the strong main field that runs the long way round the doughnut: 1.43 T " +
+        "Make the strong main field that runs the long way round the doughnut: about 1.5 T " +
         "on TCV. Charged particles spiral along the field lines instead of flying into the wall.",
       tech: [
-        "Large water-cooled copper coils, not superconducting",
-        "A dedicated power supply",
+        "16 water-cooled copper coils, not superconducting",
+        "Horizontal support bars at top and bottom tie the 16 coils into one structure, spreading the magnetic forces",
         "Current held flat during the pulse (about 2 s on TCV)"
       ],
       control: {
@@ -307,9 +306,11 @@ window.CONTENT = {
         speed: "s"
       },
       testing:
-        "Commissioned without plasma: current raised in steps while temperatures, " +
-        "forces and protection trips are checked.",
-      monitoring: "Coil current and temperature, cooling, and the interlocks that ramp the current down on a fault.",
+        "Typically commissioned without plasma: current raised in steps while " +
+        "temperatures, forces and protection trips are checked.",
+      monitoring:
+        "Typically watched: coil current and temperature, cooling, and the interlocks " +
+        "that ramp the current down on a fault.",
       diagram: {
         nodes: [
           { label: "Setpoint" },
@@ -319,8 +320,8 @@ window.CONTENT = {
         ],
         loopRate: "slow: held flat"
       },
-      sources: ["tcvWiki"],
-      verify: ["tech", "control", "testing", "monitoring"]
+      sources: ["tcvWiki", "theiler2026", "epflCourse2024"],
+      verify: ["control", "testing", "monitoring"]
     },
     {
       id: "pf",
@@ -372,8 +373,7 @@ window.CONTENT = {
         ],
         loopRate: "10 kHz (DeepMind controller)"
       },
-      sources: ["tcvWiki", "degrave2022", "hofmann1997", "dutch1995", "porcelli2023"],
-      verify: ["does"]
+      sources: ["tcvWiki", "degrave2022", "hofmann1997", "dutch1995", "porcelli2023"]
     },
     {
       id: "cs",
@@ -390,7 +390,7 @@ window.CONTENT = {
       },
       does:
         "Drives the plasma current. Ramping the current in the central coils induces a " +
-        "voltage around the doughnut, which pushes up to 1.2 MA through the plasma on TCV.",
+        "voltage around the doughnut, which pushes up to 1 MA through the plasma on TCV.",
       tech: [
         "Ohmic coils on the central column, plus coils above and below",
         "The plasma acts as the transformer's single-turn secondary",
@@ -419,8 +419,7 @@ window.CONTENT = {
         ],
         loopRate: "measured plasma current"
       },
-      sources: ["tcvWiki", "degrave2022"],
-      verify: ["tech", "control"]
+      sources: ["tcvWiki", "meijere2013", "degrave2022"]
     }
   ],
 
@@ -448,8 +447,7 @@ window.CONTENT = {
         name: "Diverted",
         text:
           "The edge is set by an X-point, where the poloidal field vanishes. Exhaust heat " +
-          "flows along the legs to the divertor, away from the main plasma.",
-        verify: ["text"]
+          "flows along the legs to the divertor, away from the main plasma."
       },
       {
         id: "elongated",
@@ -457,15 +455,13 @@ window.CONTENT = {
         text:
           "Stretched tall. TCV experiments showed extreme elongation helps raise plasma " +
           "pressure while keeping it stable. The catch: tall plasmas are vertically " +
-          "unstable and need fast feedback to stay in place.",
-        verify: ["text"]
+          "unstable and need fast feedback to stay in place."
       },
       {
         id: "positive",
         name: "Positive triangularity",
         short: "D shape",
-        text: "The classic D shape, with its flat side facing the machine's axis.",
-        verify: ["text"]
+        text: "The classic D shape, with its flat side facing the machine's axis."
       },
       {
         id: "negative",
@@ -483,8 +479,7 @@ window.CONTENT = {
         name: "Snowflake",
         text:
           "First produced on TCV. A second-order null splits the exhaust into more legs, " +
-          "to spread the heat.",
-        verify: ["text"]
+          "to spread the heat."
       },
       {
         id: "droplets",
